@@ -1,2 +1,3 @@
 Write your name here to demonstrate you have installed Git and have proper permissions to access this repository:
 Jaiden
+Richard
