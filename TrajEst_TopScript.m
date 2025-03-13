@@ -207,11 +207,31 @@ ylabel("err^2"); xlabel("t"); title("Error vs Time");
 if(hasChuteData)
     U = x2_sampled-x_sampled;
     V = y2_sampled-y_sampled;
-    theta = atan2(V,U);
+    theta = atan(V./U);
     figure();
     plot(theta,error.^2/normalized_error);
     ylabel("err^2"); xlabel("\theta"); title("Error vs Chute Angle");
     text(0,1,{"Something is","happening here"},'HorizontalAlignment','Center');
+
+    figure(hFig_traj);
+    % We need angle of attack.
+    % Get velocity vector and take the angle to that.
+    % MATLAB can get the derivative
+    Dfx = @(t)diff(fx(t));
+    Dfy = @(t)diff(fy(t));
+
+    vel = [Dfx(t_sampled)./diff(t_sampled) Dfy(t_sampled)./diff(t_sampled)];
+    quiver(fx(t_sampled(1:end-1)),fy(t_sampled(1:end-1)),vel(:,1),vel(:,2));
+
+    theta_vel = atan(vel(:,2)./vel(:,1));
+    figure();
+    plot(theta_vel,error(1:end-1).^2/normalized_error);
+    ylabel("err^2"); xlabel("Ball Vel. Angle"); title("Error vs Velocity Angle");
+    text(0,1,{"Something is","happening here"},'HorizontalAlignment','Center');
+    figure();
+    plot(theta(1:end-1)-theta_vel,error(1:end-1).^2/normalized_error);
+    ylabel("err^2"); xlabel("Angle of Attack"); title("Error vs Chute Angle (relative)");
+    text(0,1,{"How do you model this? What is this shape?"},'HorizontalAlignment','Center');
 end
 
 function [fx,fy] = GetComponentFunctions(params)
