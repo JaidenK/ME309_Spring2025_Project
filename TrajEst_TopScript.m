@@ -3,8 +3,9 @@ clear all; close all; clc;
 % Tracker Data
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_01.txt";
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_02.txt";
-input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_03.txt";
-downsample_value = 5;
+%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_03.txt";
+input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_04.txt";
+downsample_value = 10;
 
 % Assume data is formatted as 3 columns ordered: t, x, y
 % Assume time in seconds
@@ -13,6 +14,8 @@ data = readmatrix(input_file);
 % - Remove duplicate frames. Essentially a low pass filter? Cull outliers?
 % - Iteratively cull outliers until minimium number of fit points perfectly
 % define the plot.
+% - This data processing algorithm is a great example of an unanticipated
+% issue that I could've forseen. 
 figure(); 
 ax1 = subplot(4,1,1);
 xy_diff = diff(data(:,[2 3]));
@@ -40,9 +43,9 @@ end
 plot(outliers);
 outliers = outliers(:,1) | outliers(:,2);
 hold on;
-iOutliers = find(outliers)
-iiOutliers = zeros(size(iOutliers))
-for i = 1:length(iiOutliers)
+iOutliers = find(outliers);
+iiOutliers = zeros(size(iOutliers).*[length(kernel) 1]);
+for i = 1:length(iOutliers)
     index = (length(kernel)*(i-1));
     iiOutliers(index+1) = iOutliers(i)-0;
     iiOutliers(index+2) = iOutliers(i)-1;
