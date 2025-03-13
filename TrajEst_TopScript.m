@@ -197,6 +197,22 @@ ylabel("iteration");
 xlabel("parameter");
 title("Nudges at every iteration")
 
+% Is this even a good fit? Plot the error over time for the fit value.
+figure();
+[normalized_error,error] = GetError(params,[t_sampled x_sampled y_sampled]);
+plot(t_sampled,error.^2/normalized_error);
+ylabel("err^2"); xlabel("t"); title("Error vs Time");
+
+% We need to plot the error as a function of the chute vector.
+if(hasChuteData)
+    U = x2_sampled-x_sampled;
+    V = y2_sampled-y_sampled;
+    theta = atan2(V,U);
+    figure();
+    plot(theta,error.^2/normalized_error);
+    ylabel("err^2"); xlabel("\theta"); title("Error vs Chute Angle");
+    text(0,1,{"Something is","happening here"},'HorizontalAlignment','Center');
+end
 
 function [fx,fy] = GetComponentFunctions(params)
     % Constants
@@ -211,7 +227,7 @@ function [fx,fy] = GetComponentFunctions(params)
     fy = @(t) (m/b)*(u(2)+m*g/b)*(1-exp(-b*t/m))-(m*g*t/b) + x0(2);
 end
 
-function [normalized_error] = GetError(params,sampled_data)
+function [normalized_error,error] = GetError(params,sampled_data)
     [x,y] = GetComponentFunctions(params);
 
     nSamples = size(sampled_data,1);
