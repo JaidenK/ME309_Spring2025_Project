@@ -2,11 +2,14 @@ clear all; close all; clc;
 
 % Tracker Data
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_01.txt";
-input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_02.txt";
+%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_02.txt";
+input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_03.txt";
 
 % Assume data is formatted as 3 columns ordered: t, x, y
 % Assume time in seconds
 data = readmatrix(input_file);
+% Remove all rows containing NaN
+data(any(isnan(data), 2), :) = []; % https://www.mathworks.com/matlabcentral/answers/31971-delete-rows-with-nan-records
 t_sampled = data(:,1);
 x_sampled = data(:,2);
 y_sampled = data(:,3);
@@ -24,9 +27,10 @@ xlabel("x (m)"); ylabel("y (m)");
 % the data.
 t_impact_measured = t_sampled(y_sampled==min(y_sampled));
 % Downsample for visual clarity
-t_sampled = downsample(t_sampled,1);
-x_sampled = downsample(x_sampled,1);
-y_sampled = downsample(y_sampled,1);
+downsample_value = 5;
+t_sampled = downsample(t_sampled,downsample_value);
+x_sampled = downsample(x_sampled,downsample_value);
+y_sampled = downsample(y_sampled,downsample_value);
 % Cap samples to data near the expected impact time to avoid fitting to
 % data after the bounce
 t_sampled = t_sampled(t_sampled < t_impact_measured);
@@ -34,8 +38,9 @@ x_sampled = x_sampled(t_sampled < t_impact_measured);
 y_sampled = y_sampled(t_sampled < t_impact_measured);
 
 % Plot any trajectory
-x0 = [-3 1.8]; 
-u = [5 1]; 
+% Make initial guesses from first 2 samples.
+x0 = [x_sampled(1) y_sampled(1)]; 
+u = [(x_sampled(2)-x_sampled(1)) (y_sampled(2)-y_sampled(1))]/(t_sampled(2)-t_sampled(1)); 
 b = 1;
 nudge = zeros(1,5);
 epsilon = 0.2;
@@ -83,7 +88,7 @@ for frameNo=1:10000
         littlest_nudge = [0 0 0 0 0];
         littlest_nudge(i) = epsilon;
         f = @(x)GetError(params+x.*littlest_nudge,[t_sampled x_sampled y_sampled]);        
-        [nudge_val,err_val] = fminbnd(f,-100,100);
+        [nudge_val,err_val] = fminbnd(f,-1,1);
         err(i) = err_val;
         little_nudge(i) = nudge_val*epsilon;
     end
@@ -91,9 +96,18 @@ for frameNo=1:10000
     i_min = find(err == min(err),1);
     nudge = [0 0 0 0 0];
     nudge(i_min) = nudge(i_min) + little_nudge(i_min);
-    
-    pause(1/24);
+
     currentErr = GetError(params,[t_sampled x_sampled y_sampled]);
+    
+    text(10,10,{ ...
+        sprintf("x0: %g, %g",params(1),params(2)), ...
+        sprintf("v0: %g, %g",params(3),params(4)), ...
+        sprintf("b: %g",params(5)), ...
+        sprintf("err: %g",currentErr)
+        },'Units','pixels' ...
+        ,'VerticalAlignment','bottom');
+
+    pause(1/24);
     if(currentErr < 0)
         break;
     end
