@@ -4,20 +4,34 @@ clear all; close all; clc;
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_01.txt";
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_02.txt";
 input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_03.txt";
+downsample_value = 5;
 
 % Assume data is formatted as 3 columns ordered: t, x, y
 % Assume time in seconds
 data = readmatrix(input_file);
+% Data Processing Algorithms
+% - Remove duplicate frames. Essentially a low pass filter? Cull outliers?
+% - Iteratively cull outliers until minimium number of fit points perfectly
+% define the plot.
 % Remove all rows containing NaN
 data(any(isnan(data), 2), :) = []; % https://www.mathworks.com/matlabcentral/answers/31971-delete-rows-with-nan-records
 t_sampled = data(:,1);
 x_sampled = data(:,2);
 y_sampled = data(:,3);
-
+hasChuteData = false;
+if(size(data,2)>3)
+    x2_sampled = data(:,4);
+    y2_sampled = data(:,5);
+    hasChuteData = true;
+end
 
 % Plot raw data to confirm we're on the right track
 hFig_raw = figure();
 plot(x_sampled,y_sampled,'d');
+hold on;
+if(hasChuteData)
+    quiver(x_sampled,y_sampled,x2_sampled-x_sampled,y2_sampled-y_sampled);
+end
 title("Sampled Positions");
 ylim([0 max(y_sampled)+1]);
 axis equal
@@ -27,15 +41,23 @@ xlabel("x (m)"); ylabel("y (m)");
 % the data.
 t_impact_measured = t_sampled(y_sampled==min(y_sampled));
 % Downsample for visual clarity
-downsample_value = 5;
+
 t_sampled = downsample(t_sampled,downsample_value);
 x_sampled = downsample(x_sampled,downsample_value);
 y_sampled = downsample(y_sampled,downsample_value);
+if(hasChuteData)
+    x2_sampled = downsample(x2_sampled,downsample_value);
+    y2_sampled = downsample(y2_sampled,downsample_value);
+end
 % Cap samples to data near the expected impact time to avoid fitting to
 % data after the bounce
 t_sampled = t_sampled(t_sampled < t_impact_measured);
 x_sampled = x_sampled(t_sampled < t_impact_measured);
 y_sampled = y_sampled(t_sampled < t_impact_measured);
+if(hasChuteData)
+    x2_sampled = x2_sampled(t_sampled < t_impact_measured);
+    y2_sampled = y2_sampled(t_sampled < t_impact_measured);
+end
 
 % Plot any trajectory
 % Make initial guesses from first 2 samples.
@@ -53,9 +75,12 @@ hFig_traj = figure();
 hold on;
 axis equal
 
-for frameNo=1:10000
+nudges = zeros(50,length(nudge));
+
+for frameNo=1:50
     clf;
 
+    nudges(frameNo,:) = nudge;
     params = params + nudge;
 
     [fx,fy] = GetComponentFunctions(params);
@@ -67,6 +92,9 @@ for frameNo=1:10000
     xlim(xlims);
     % Also plot the sampled points
     scatter(x_sampled,y_sampled);
+    if(hasChuteData)
+        quiver(x_sampled,y_sampled,x2_sampled-x_sampled,y2_sampled-y_sampled);
+    end
     hold on;
     xlabel("x(t)"); ylabel("y(t)"); title("Estimated trajectory.");
     
@@ -113,6 +141,12 @@ for frameNo=1:10000
     end
 end
 
+hFig_nudges = figure();
+% Witness the results of gradient descent
+pcolor(log(abs([nudges zeros(size(nudges,1),1)])));
+ylabel("iteration");
+xlabel("parameter");
+title("Nudges at every iteration")
 
 
 function [fx,fy] = GetComponentFunctions(params)
