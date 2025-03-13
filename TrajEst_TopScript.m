@@ -1,0 +1,129 @@
+clear all; close all; clc;
+
+% Tracker Data
+%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_01.txt";
+input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_02.txt";
+
+% Assume data is formatted as 3 columns ordered: t, x, y
+% Assume time in seconds
+data = readmatrix(input_file);
+t_sampled = data(:,1);
+x_sampled = data(:,2);
+y_sampled = data(:,3);
+
+
+% Plot raw data to confirm we're on the right track
+hFig_raw = figure();
+plot(x_sampled,y_sampled,'d');
+title("Sampled Positions");
+ylim([0 max(y_sampled)+1]);
+axis equal
+xlabel("x (m)"); ylabel("y (m)");
+
+% Calculate when the impact occurred based on a naive interpretation of
+% the data.
+t_impact_measured = t_sampled(y_sampled==min(y_sampled));
+% Downsample for visual clarity
+t_sampled = downsample(t_sampled,1);
+x_sampled = downsample(x_sampled,1);
+y_sampled = downsample(y_sampled,1);
+% Cap samples to data near the expected impact time to avoid fitting to
+% data after the bounce
+t_sampled = t_sampled(t_sampled < t_impact_measured);
+x_sampled = x_sampled(t_sampled < t_impact_measured);
+y_sampled = y_sampled(t_sampled < t_impact_measured);
+
+% Plot any trajectory
+x0 = [-3 1.8]; 
+u = [5 1]; 
+b = 1;
+nudge = zeros(1,5);
+epsilon = 0.2;
+params = [x0 u b];
+
+xlims = get(gca,'XLim');
+ylims = get(gca,'YLim');
+
+hFig_traj = figure();
+hold on;
+axis equal
+
+for frameNo=1:10000
+    clf;
+
+    params = params + nudge;
+
+    [fx,fy] = GetComponentFunctions(params);
+    t_impact = fzero(fy,max(t_sampled)); % Search for y=0 starting near end of data       
+    fplot(fx,fy,[0 abs(t_impact)]);
+    hold on;
+    axis equal
+    ylim(ylims);
+    xlim(xlims);
+    % Also plot the sampled points
+    scatter(x_sampled,y_sampled);
+    hold on;
+    xlabel("x(t)"); ylabel("y(t)"); title("Estimated trajectory.");
+    
+    %title({"Trajectory w/ linear drag",sprintf("Error_{%d}: %g",frameNo,GetError(params,sampled_data))});
+
+    % Plot the error
+    nSamples = length(x_sampled);
+    for i = 1:nSamples
+        ti = t_sampled(i);
+        xi = x_sampled(i);
+        yi = y_sampled(i);
+        plot([xi fx(ti)],[yi fy(ti)],'r');
+    end
+    
+    % Compute gradient
+    little_nudge = [0 0 0 0 0];
+    err = [0 0 0 0 0];
+    for i = 1:5
+        littlest_nudge = [0 0 0 0 0];
+        littlest_nudge(i) = epsilon;
+        f = @(x)GetError(params+x.*littlest_nudge,[t_sampled x_sampled y_sampled]);        
+        [nudge_val,err_val] = fminbnd(f,-100,100);
+        err(i) = err_val;
+        little_nudge(i) = nudge_val*epsilon;
+    end
+    
+    i_min = find(err == min(err),1);
+    nudge = [0 0 0 0 0];
+    nudge(i_min) = nudge(i_min) + little_nudge(i_min);
+    
+    pause(1/24);
+    currentErr = GetError(params,[t_sampled x_sampled y_sampled]);
+    if(currentErr < 0)
+        break;
+    end
+end
+
+
+
+function [fx,fy] = GetComponentFunctions(params)
+    % Constants
+    m = 1;
+    g = 9.81;
+    % params
+    x0 = [params(1) params(2)];
+    u = [params(3) params(4)];
+    b = params(5);
+    % Functions
+    fx = @(t) ((m*u(1))/(b))*(1-exp(-b*t/m)) + x0(1);
+    fy = @(t) (m/b)*(u(2)+m*g/b)*(1-exp(-b*t/m))-(m*g*t/b) + x0(2);
+end
+
+function [normalized_error] = GetError(params,sampled_data)
+    [x,y] = GetComponentFunctions(params);
+
+    nSamples = size(sampled_data,1);
+    error = zeros(size(sampled_data(:,1)));
+    for i = 1:nSamples
+        ti = sampled_data(i,1);
+        xi = sampled_data(i,2);
+        yi = sampled_data(i,3);
+        error(i) = norm([xi-x(ti) yi-y(ti)]);
+    end
+    normalized_error = sum(error.^2)/nSamples;
+end
