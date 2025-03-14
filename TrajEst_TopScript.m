@@ -5,7 +5,8 @@ clear all; close all; clc;
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_02.txt";
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_03.txt";
 input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_04.txt";
-downsample_value = 10;
+downsample_value = 1;
+n_max_iterations = 200;
 
 % Assume data is formatted as 3 columns ordered: t, x, y
 % Assume time in seconds
@@ -55,9 +56,9 @@ ax4 = subplot(4,1,4);
 % Remove the data
 data(iiOutliers,:) = [];
 xy_diff = diff(data(:,[2 3]));
-plot(xy_diff(:,1)); 
+plot(xy_diff(:,1)./diff(data(:,1))); 
 hold on;
-plot(xy_diff(:,2)); 
+plot(xy_diff(:,2)./diff(data(:,1))); 
 
 linkaxes([ax1 ax2 ax3 ax4],'x');
 
@@ -126,7 +127,7 @@ axis equal
 
 nudges = zeros(50,length(nudge));
 
-for frameNo=1:50
+for frameNo=1:n_max_iterations
     clf;
 
     nudges(frameNo,:) = nudge;
@@ -192,28 +193,31 @@ end
 
 hFig_nudges = figure();
 % Witness the results of gradient descent
-pcolor(log(abs([nudges zeros(size(nudges,1),1)])));
+h = pcolor(log(abs([nudges zeros(size(nudges,1),1)])));
+set(h, 'EdgeColor', 'none');
 ylabel("iteration");
 xlabel("parameter");
 title("Nudges at every iteration")
 
 % Is this even a good fit? Plot the error over time for the fit value.
 figure();
-[normalized_error,error] = GetError(params,[t_sampled x_sampled y_sampled]);
-plot(t_sampled,error.^2/normalized_error);
-ylabel("err^2"); xlabel("t"); title("Error vs Time");
+[normalized_error,error,error_vec] = GetError(params,[t_sampled x_sampled y_sampled]);
+%plot(t_sampled,error.^2/normalized_error);
+%ylabel("err^2"); xlabel("t"); title("Error vs Time");
+plot(t_sampled,error);
+ylabel("error"); xlabel("t"); title("Error vs Time");
 
 % We need to plot the error as a function of the chute vector.
 if(hasChuteData)
-    U = x2_sampled-x_sampled;
-    V = y2_sampled-y_sampled;
-    theta = atan(V./U);
+    chute_U = x2_sampled-x_sampled;
+    chute_V = y2_sampled-y_sampled;
+    theta_chute = atan2(chute_V,chute_U);
+    theta_chute = AngleRolloverCorrection(theta_chute);
     figure();
-    plot(theta,error.^2/normalized_error);
+    plot(theta_chute,error.^2/normalized_error);
     ylabel("err^2"); xlabel("\theta"); title("Error vs Chute Angle");
     text(0,1,{"Something is","happening here"},'HorizontalAlignment','Center');
 
-    figure(hFig_traj);
     % We need angle of attack.
     % Get velocity vector and take the angle to that.
     % MATLAB can get the derivative
@@ -221,17 +225,50 @@ if(hasChuteData)
     Dfy = @(t)diff(fy(t));
 
     vel = [Dfx(t_sampled)./diff(t_sampled) Dfy(t_sampled)./diff(t_sampled)];
+
+    figure(hFig_traj);
     quiver(fx(t_sampled(1:end-1)),fy(t_sampled(1:end-1)),vel(:,1),vel(:,2));
 
-    theta_vel = atan(vel(:,2)./vel(:,1));
+    theta_error = atan2(error_vec(:,2),error_vec(:,1));
+    theta_error = AngleRolloverCorrection(theta_error);    
+
+    theta_vel = atan2(vel(:,2),vel(:,1));
+    theta_vel = AngleRolloverCorrection(theta_vel);
+
     figure();
     plot(theta_vel,error(1:end-1).^2/normalized_error);
     ylabel("err^2"); xlabel("Ball Vel. Angle"); title("Error vs Velocity Angle");
     text(0,1,{"Something is","happening here"},'HorizontalAlignment','Center');
     figure();
-    plot(theta(1:end-1)-theta_vel,error(1:end-1).^2/normalized_error);
-    ylabel("err^2"); xlabel("Angle of Attack"); title("Error vs Chute Angle (relative)");
+    plot(theta_chute(1:end-1)-theta_vel,error(1:end-1).^2/normalized_error);
+    ylabel("err^2"); xlabel("Angle of Attack"); title("Error vs Chute-Velocity Angle");
     text(0,1,{"How do you model this? What is this shape?"},'HorizontalAlignment','Center');
+    figure();
+    plot(theta_error(1:end-1)-theta_vel,error(1:end-1).^2/normalized_error);
+    ylabel("err^2"); xlabel("Angle between error and chute vector."); title("Error vs Error-Velocity Angle");
+    figure();
+    plot(theta_chute-theta_error,error.^2/normalized_error);
+    ylabel("err^2"); xlabel("Angle between error and chute vector."); title("Error vs Error-Chute Angle");
+    
+    % Oh this one's interesting   
+    figure(); 
+    plot(rad2deg(theta_chute),rad2deg(theta_error));
+    xlabel("\theta chute (deg)"); ylabel("\theta error (deg)"); title("Error-Vel Angle vs Chute-Vel Angle");
+    figure();
+    subplot(2,1,1);
+    plot(t_sampled(1:end-1),rad2deg(theta_error(1:end-1)-theta_vel));
+    ylabel("\theta error (degrees)"); xlabel("time"); title("Error-Vel Angle vs Time");    
+    subplot(2,1,2);
+    plot(t_sampled(1:end-1),rad2deg(theta_chute(1:end-1)-theta_vel));
+    ylabel("\theta error (degrees)"); xlabel("time"); title("Chute-Vel Angle vs Time");
+
+    vel_magnitude = zeros(size(vel(:,1)));
+    for i = 1:length(vel_magnitude)
+        vel_magnitude(i) = norm(vel(i,:));
+    end
+    figure();
+    plot(vel_magnitude,error(1:end-1).^2/normalized_error);
+    xlabel("Speed"); ylabel("Error");
 end
 
 function [fx,fy] = GetComponentFunctions(params)
@@ -247,16 +284,19 @@ function [fx,fy] = GetComponentFunctions(params)
     fy = @(t) (m/b)*(u(2)+m*g/b)*(1-exp(-b*t/m))-(m*g*t/b) + x0(2);
 end
 
-function [normalized_error,error] = GetError(params,sampled_data)
+function [normalized_error,error,error_vec] = GetError(params,sampled_data)
     [x,y] = GetComponentFunctions(params);
 
     nSamples = size(sampled_data,1);
     error = zeros(size(sampled_data(:,1)));
+    error_vec = zeros(size(sampled_data(:,[1 2])));
     for i = 1:nSamples
         ti = sampled_data(i,1);
         xi = sampled_data(i,2);
         yi = sampled_data(i,3);
-        error(i) = norm([xi-x(ti) yi-y(ti)]);
+        error_vec(i,:) = [xi-x(ti) yi-y(ti)];
+        error(i) = norm(error_vec(i,:));
     end
     normalized_error = sum(error.^2)/nSamples;
 end
+
