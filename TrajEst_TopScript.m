@@ -5,8 +5,9 @@ clear all; close all; clc;
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_02.txt";
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_03.txt";
 input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_04.txt";
-downsample_value = 1;
-n_max_iterations = 200;
+%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_05.txt";
+downsample_value = 5;
+n_max_iterations = 50;
 
 % Assume data is formatted as 3 columns ordered: t, x, y
 % Assume time in seconds
@@ -129,6 +130,9 @@ nudges = zeros(50,length(nudge));
 
 for frameNo=1:n_max_iterations
     clf;
+    if(mod(frameNo,25)==0)
+        fprintf("frameNo: %d\n",frameNo);
+    end
 
     nudges(frameNo,:) = nudge;
     params = params + nudge;
