@@ -1,0 +1,4 @@
+*.gz
+Report/*.pdf
+Report/*.log
+Report/*.aux
