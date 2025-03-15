@@ -1,4 +1,4 @@
-clear all; close all; clc;
+%clear all; close all; clc;
 
 
 
@@ -38,8 +38,8 @@ vec(3).text = {"$f_{drag}$",sprintf("%g",norm(vec(3).forces))};
 vec(3).position = 1.5;
 
 for i=1:length(vec)
-    quiver(0,0,vec(i).forces(1),vec(i).forces(2),"off");
-    text(vec(i).forces(1)*vec(i).position,vec(i).forces(2)*vec(i).position,vec(i).text,'HorizontalAlignment','center','VerticalAlignment','middle','Interpreter','latex');
+    vec(i).hQuiv = quiver(0,0,vec(i).forces(1),vec(i).forces(2),"off");
+    vec(i).hText = text(vec(i).forces(1)*vec(i).position,vec(i).forces(2)*vec(i).position,vec(i).text,'HorizontalAlignment','center','VerticalAlignment','middle','Interpreter','latex');
 end
 
 axis equal
@@ -48,5 +48,21 @@ lims = max(max(abs([vec(:).forces])))*[-1.5 1.5];
 xlim(lims);
 ylim(lims);
 fontsize(16,'points');
+
+% Animation. Requires function populated in workspace.
+% frame_period = 1/60;
+% for t=0:frame_period:t_impact    
+%     vec(2).forces = [Dfx([t-0.1 t])/0.1 Dfy([t-0.1 t])/0.1];
+%     vec(2).text = {"$v$",sprintf("%g",norm(vec(2).forces))};
+% 
+%     for i=1:length(vec)
+%         vec(i).hQuiv.UData = vec(i).forces(1);
+%         vec(i).hQuiv.VData = vec(i).forces(2);
+%         vec(i).hText.String = vec(i).text;
+%         vec(i).hText.Position = [vec(i).forces(1)*vec(i).position,vec(i).forces(2)*vec(i).position];
+%     end
+% 
+%     pause(frame_period);
+% end
 
 
