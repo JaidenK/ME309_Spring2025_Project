@@ -14,7 +14,7 @@ n_max_iterations = 50;
 data = readmatrix(input_file);
 data = data_processing(data);
 [t_sampled,x_sampled,y_sampled,x2_sampled,y2_sampled,hasChuteData] = data_extraction(data);
-%[vx_sampled,vy_sampled,ax_sampled,ax_sampled] = numeric_differentiation()
+[vx_sampled,vy_sampled,ax_sampled,ay_sampled] = numeric_differentiation(t_sampled,x_sampled,y_sampled);
 
 
 % Plot raw data to confirm we're on the right track
