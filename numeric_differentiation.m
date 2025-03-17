@@ -1,8 +1,8 @@
-function [vx,vy,ax,ay] = numeric_differentiation(t,x,y)
+function [vx,vy,ax,ay,hFig_numdif] = numeric_differentiation(t,x,y)
 %NUMERIC_DIFFERENTIATION Summary of this function goes here
 %   Detailed explanation goes here
 
-figure();
+hFig_numdif = figure();
 title("Numeric Differentiation of Sampled Data");
 
 tiledlayout(3,3);

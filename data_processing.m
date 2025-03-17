@@ -8,10 +8,8 @@ function [data] = data_processing(data)
 % - This data processing algorithm is a great example of an unanticipated
 % issue that I could've forseen. 
 
-
 % Remove all rows containing NaN
 data(any(isnan(data), 2), :) = []; % https://www.mathworks.com/matlabcentral/answers/31971-delete-rows-with-nan-records
-
 
 figure(); 
 ax1 = subplot(2,1,1);
@@ -75,8 +73,6 @@ yline(0);
 linkaxes([ax1 ax4]);
 ylabel("v (m/s)");
 xlabel("t (s)");
-
-
 
 end
 

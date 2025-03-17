@@ -2,11 +2,13 @@ clear all; close all; clc;
 
 % Tracker Data
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_01.txt";
-%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_02.txt";
-%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_03.txt";
-input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_04.txt";
+input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_02.txt"; initial_guess = [1.283122106137774,1.642406551663037,-0.204654716244155,8.907081047040949,0.044127261050646];
+%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_03.txt"; initial_guess = [1.193931719840421,1.989163442011656,-3.939831739086767,1.260457045291940,0.335924873674815];
+%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_04.txt"; initial_guess = [-1.871997654204061,2.328357930556231,2.715263611801111,5.872290524153842,0.309757887070275];
 %input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_05.txt";
-downsample_value = 5;
+%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_06.txt"; initial_guess = [1.28683 1.57797 -1.91877 8.64988 0.221963];
+%input_file = "D:\CSUN\ME309\Project\GoogleDrive\Filming Day 1\Clips\Throw_07.txt"; initial_guess=[0.680127 1.64703 -1.86011 8.4653 0.155544];
+downsample_value = 1;
 n_max_iterations = 50;
 
 % Assume data is formatted as 3 columns ordered: t, x, y
@@ -14,7 +16,7 @@ n_max_iterations = 50;
 data = readmatrix(input_file);
 data = data_processing(data);
 [t_sampled,x_sampled,y_sampled,x2_sampled,y2_sampled,hasChuteData] = data_extraction(data);
-[vx_sampled,vy_sampled,ax_sampled,ay_sampled] = numeric_differentiation(t_sampled,x_sampled,y_sampled);
+[vx_sampled,vy_sampled,ax_sampled,ay_sampled,hFig_numdif] = numeric_differentiation(t_sampled,x_sampled,y_sampled);
 
 
 % Plot raw data to confirm we're on the right track
@@ -53,9 +55,16 @@ end
 
 % Plot any trajectory
 % Make initial guesses from first 2 samples.
-x0 = [x_sampled(1) y_sampled(1)]; 
-u = [(x_sampled(2)-x_sampled(1)) (y_sampled(2)-y_sampled(1))]/(t_sampled(2)-t_sampled(1)); 
-b = 1;
+if(exist('initial_guess','var'))
+    x0 = [initial_guess(1) initial_guess(2)]; 
+    u = [initial_guess(3) initial_guess(4)]; 
+    b = initial_guess(5);
+else
+    it0_1 = find(t_sampled > 0.1,1);
+    x0 = [x_sampled(1) y_sampled(1)]; 
+    u = [(x_sampled(it0_1)-x_sampled(1)) (y_sampled(it0_1)-y_sampled(1))]/(t_sampled(it0_1)-t_sampled(1)); 
+    b = 0.1;
+end
 nudge = zeros(1,5);
 epsilon = 0.2;
 params = [x0 u b];
@@ -152,6 +161,30 @@ figure();
 plot(t_sampled,error);
 ylabel("error"); xlabel("t"); title("Error vs Time");
 
+% We need angle of attack.
+% Get velocity vector and take the angle to that.
+% MATLAB can get the derivative
+Dfx = @(t)diff(fx(t));
+Dfy = @(t)diff(fy(t));
+
+vel = [Dfx(t_sampled)./diff(t_sampled) Dfy(t_sampled)./diff(t_sampled)];
+
+vel_magnitude = zeros(size(vel(:,1)));
+for i = 1:length(vel_magnitude)
+    vel_magnitude(i) = norm(vel(i,:));
+end
+vel_unit = vel./vel_magnitude;
+
+% Show the component of error parallel to model predicted velocity. This should
+% tell us if it's leading or lagging while ignoring the sideways movement.
+figure();
+error_tangent_to_traj = zeros(length(error)-1,1);
+for i = 1:length(error_tangent_to_traj)
+    error_tangent_to_traj(i) = dot(error_vec(i,:),vel(i,:)./vel_magnitude(i));
+end
+plot(vel_magnitude,error_tangent_to_traj);
+xlabel("velocity magnitude"); ylabel("error (parallel to velocity)"); title("Tangential Error vs Velocity");
+
 % We need to plot the error as a function of the chute vector.
 if(hasChuteData)
     chute_U = x2_sampled-x_sampled;
@@ -163,13 +196,6 @@ if(hasChuteData)
     ylabel("err^2"); xlabel("\theta"); title("Error vs Chute Angle");
     text(0,1,{"Something is","happening here"},'HorizontalAlignment','Center');
 
-    % We need angle of attack.
-    % Get velocity vector and take the angle to that.
-    % MATLAB can get the derivative
-    Dfx = @(t)diff(fx(t));
-    Dfy = @(t)diff(fy(t));
-
-    vel = [Dfx(t_sampled)./diff(t_sampled) Dfy(t_sampled)./diff(t_sampled)];
 
     figure(hFig_traj);
     quiver(fx(t_sampled(1:end-1)),fy(t_sampled(1:end-1)),vel(:,1),vel(:,2));
@@ -207,15 +233,37 @@ if(hasChuteData)
     plot(t_sampled(1:end-1),rad2deg(theta_chute(1:end-1)-theta_vel));
     ylabel("\theta error (degrees)"); xlabel("time"); title("Chute-Vel Angle vs Time");
 
-    vel_magnitude = zeros(size(vel(:,1)));
-    for i = 1:length(vel_magnitude)
-        vel_magnitude(i) = norm(vel(i,:));
-    end
     figure();
     plot(vel_magnitude,error(1:end-1).^2/normalized_error);
     xlabel("Speed"); ylabel("Error");
 end
 
+%% Show model on numeric differentiation plots
+figure(hFig_numdif);
+t = linspace(0,max(t_sampled),100);
+%tiledlayout(3,3);
+%nexttile;
+nexttile(1);
+hold on;
+plot(fx(t),fy(t),'--r');
+nexttile(2);
+hold on;
+plot(t,fx(t),'--r');
+nexttile(3);
+hold on;
+plot(t,fy(t),'--r');
+% Velocity
+nexttile(5);
+hold on;
+t_mid = t_sampled(1:end-1) + diff(t_sampled)/2;
+plot(t_mid,vel(:,1),'--r');
+nexttile(6);
+hold on;
+plot(t_mid,vel(:,2),'--r');
+
+
+
+%% Function Definitions
 function [fx,fy] = GetComponentFunctions(params)
     % Constants
     m = 1;
