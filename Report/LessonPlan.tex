@@ -66,6 +66,29 @@ The decision feels fairly arbitrary, but I feel like having the functions return
 
 We should also take note of what the model parameters are. We obviously have time, but there's also gravity, initial velocity, and initial position. I'll define gravity to be a constant $9.81\ m/s^2$, time will be $t \in \mathbb{R}$, and the initial velocity and initial positions will be column vectors.\footnote{We may want to make t only defined on the interval (0,impact)}\footnote{I'm going to define them in column vectors to match the functions, but we could also think about specifying them in other coordinate systems like polar coordinates if that's desired. That could be a standalone function to convert from polar to Cartesian.} 
 
+\section{Plotting the Model}
+We've made a simple model of the trajectory and it would be good to see what it looks like. You can probably plot the position components over time pretty easily with the command window, but we're going to generate these plots a lot during the course of development so let's write a function to do it for us. 
+
+We're clearly going to want to plot the position over time, but first let's consider what would be a useful way to display the model in general. Some information to include:
+\begin{itemize}
+\item Kinematics Graphs
+\begin{itemize}
+\item Position
+\item Velocity
+\item Acceleration
+\end{itemize}
+\item Model Parameters
+\begin{itemize}
+\item Initial Position
+\item Initial Velocity
+\end{itemize}
+\item Additional Info
+\begin{itemize}
+\item Test Number/Filename
+\end{itemize} 
+\end{itemize}
+For now, let's address plotting the kinematics. There are plenty of different ways to do this, but I like a 3x3 grid that shows the components separately. One thing to keep in mind when creating the figure is that we're going to want to also plot the sampled data on here as well.
+
 
 
 

@@ -1,12 +1,11 @@
 clear all; close all; clc;
 
-r0 = [0; 0]; % [meters, meters];
-v0 = [1; 1];
-g = 9.81; 
-
 ModelParameters = struct();
-ModelParameters.r0 = [0; 0];
-ModelParameters.v0 = [1; 1];
+ModelParameters.r0 = [0; 1];
+ModelParameters.v0 = [2; 9];
 ModelParameters.g = 9.81;
 
 Model = GenerateModel_NoDrag(ModelParameters);
+
+t = linspace(0,2,100);
+PlotKinematics(Model,t,ModelParameters);
