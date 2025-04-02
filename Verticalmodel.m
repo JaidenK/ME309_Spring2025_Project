@@ -7,6 +7,7 @@ data =readmatrix(fullPath);
 tsampled=data(:,1);
 ysampled=data(:,3);
 i_impact =find (ysampled==min(ysampled)); %changed from i to i_impact cuz general practice 4 meaningful names
+% index in array, showing the minimum y value i.e. impact
 t_impact = tsampled(i_impact);
 % previous code, arranges data
 y0=ysampled(1);
@@ -22,3 +23,10 @@ xlabel ('time (s)'); ylabel ('Vertical position (m)'); title ('Position vs Time 
 hold on 
 plot(data(:,1),data(:,3));
 legend ('model','sample');
+
+Error_1= (ysampled(1:i_impact)-y(tsampled(1:i_impact))); % evaluating model at sampled times,
+% 1 starts data at point 1, colon will give range, i_impact was used as a limit 
+figure; plot(Error_1.^2)
+xlabel ("Sample");
+ylabel ("error^2")
+title ("Error about Y-Position")
