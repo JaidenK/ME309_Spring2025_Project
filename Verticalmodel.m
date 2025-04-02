@@ -24,9 +24,14 @@ hold on
 plot(data(:,1),data(:,3));
 legend ('model','sample');
 
-Error_1= (ysampled(1:i_impact)-y(tsampled(1:i_impact))); % evaluating model at sampled times,
+Error_1= (ysampled(1:i_impact)-y(tsampled(1:i_impact)));% evaluating model at sampled times,
 % 1 starts data at point 1, colon will give range, i_impact was used as a limit 
+Error_sum= (sum(Error_1))/(length(Error_1));% summation of error in order to find least error
+%from previous lines we get our error metric
+
+
 figure; plot(Error_1.^2)
 xlabel ("Sample");
-ylabel ("error^2")
-title ("Error about Y-Position")
+ylabel ("error^2") 
+title ({"Error about Y-Position",Error_sum}) 
+
