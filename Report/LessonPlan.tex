@@ -47,8 +47,8 @@ The main function we need to know is the position so that we can compute its pos
 \begin{align*}
 Model Output =
 \begin{cases} 
-\dot{\ddot{\bf r}}(t) & acceleration \\
-\ddot{\bf r}(t) & velocity \\
+\ddot{\bf r}(t) & acceleration \\
+\dot{\bf r}(t) & velocity \\
 {\bf r}(t) & position
 \end{cases}
 = 
@@ -89,8 +89,19 @@ We're clearly going to want to plot the position over time, but first let's cons
 \end{itemize}
 For now, let's address plotting the kinematics. There are plenty of different ways to do this, but I like a 3x3 grid that shows the components separately. One thing to keep in mind when creating the figure is that we're going to want to also plot the sampled data on here as well.
 
+\section{Loading Motion Data}
+Several short clips of video have been processed using Tracker and uploaded to the Google Drive folder. The files are all named \texttt{Throw\_XX.txt} where XX is an integer with a leading zero. The contents of the files have a few lines of header text followed by rows of comma separated values. 
 
+The first column is time (seconds), followed by the projectile's x and y position. If the chute is present it will also have data, but we'll address that later.
 
+We should extract the data in a way that's most compatible with our model. This would mean extracting the position data as an array of column vectors. This should be encapsulated in a function.
+
+\section{Fitting the Model}
+\subsection{Error Metric}
+\subsection{Gradient Descent}
+
+\section{Linear Drag Model}
+\section{Loading Chute Data}
 
 
 
