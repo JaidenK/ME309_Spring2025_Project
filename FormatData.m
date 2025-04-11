@@ -2,11 +2,14 @@ function [SampledData] = FormatData(RawData,DownsamplingValue)
 %FORMATDATA Summary of this function goes here
 %   Detailed explanation goes here
 
+% Remove all rows containing NaN
+RawData(any(isnan(RawData), 2), :) = []; % https://www.mathworks.com/matlabcentral/answers/31971-delete-rows-with-nan-records
+
 y_sampled = RawData(:,3);
 
 % Find the impact index and cut off the rebound for simplicity.
-% Assume the lowest y position is impact. This isn't true if it bounces a
-% second time, closer to the camera
+% Assume the lowest y position is impact. This isn't true if, for example,
+% it bounces a second time closer to the camera
 iImpact = find(y_sampled == min(y_sampled));
 
 t_sampled = RawData(1:iImpact,1);

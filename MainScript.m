@@ -1,8 +1,8 @@
 clear all; close all; clc;
 
 %% Input/Configuration
-TestNumber = 2;
-DownsamplingValue = 5;
+TestNumber = 4;
+DownsamplingValue = 10;
 
 %% Load the data
 [TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber);
@@ -26,8 +26,16 @@ clear RawData % This is inserted into the Data struct in the FormatData function
 % the utility of our model.
 %[vx_sampled,vy_sampled,ax_sampled,ay_sampled,hFig_numdif] = numeric_differentiation(t_sampled,x_sampled,y_sampled);
 
+% TODO
+% Generate model parameters based on the data. 
+% Initial guess can come from the first 2 sample points.
+% Use linear regression or gradient descent to fine tune the parameters.
+% For now I'm using the parameters found in my other repo branch.
+
 % Generate Model
 [Model] = GenerateModel_NoDrag(ModelParams);
+
+[Error] = ComputeError(Data,Model);
 
 QuickPlot_SampledData_Position(Data);
 QuickPlot_Model_Position(Model);
