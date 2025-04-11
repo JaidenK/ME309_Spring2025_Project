@@ -6,7 +6,7 @@ Model.Description = "Parabolic Model (No Drag)";
 % Decode parameters
 [g,r0,v0,~] = DecodeModelParams_FromVecToVar(ModelParameters);
 
-% implement equations that were derived in the notes.
+% implement equations that were derived analytically in the notes.
 Model.acc_of_t.x = @(t) zeros(size(t));
 Model.acc_of_t.y = @(t) -g*ones(size(t));
 Model.vel_of_t.x = @(t) v0(1)*ones(size(t));
@@ -18,11 +18,11 @@ Model.pos_of_t.y = @(t) -(1/2)*g*t.^2 + v0(2)*t + r0(2);
 % Make sure the estimated impact time is positive by looping while it's
 % negative.
 Model.tImpact = -1;
-for i=5:100
+for t0=5:100
     if(Model.tImpact > 0)
         break;
     end
-    Model.tImpact = fzero(Model.pos_of_t.y,i);
+    Model.tImpact = fzero(Model.pos_of_t.y,t0);
 end
 
 end

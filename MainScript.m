@@ -1,7 +1,7 @@
 %clear all; close all; clc;
 
 %% Input/Configuration
-TestNumber = 5;
+TestNumber = 6;
 DownsamplingValue = 10;
 forceInitialParameterEstimation = false;
 
@@ -38,6 +38,12 @@ end
 
 % TODO
 % Use linear regression or gradient descent to fine tune the parameters.
+% E.g. [Model,Error] = GradientDescent(Data,ModelParams,nIterations)
+
+% TODO 
+% Model with linear drag
+% https://www.youtube.com/watch?v=Tr_TpLk3dY8
+
 [Model] = GenerateModel_NoDrag(ModelParams);
 [Error] = ComputeError(Data,Model);
 
