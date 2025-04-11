@@ -39,4 +39,5 @@ clear RawData % This is inserted into the Data struct in the FormatData function
 
 QuickPlot_SampledData_Position(Data);
 QuickPlot_Model_Position(Model);
+QuickPlot_Combined_Position(Model,Data,Error);
 
