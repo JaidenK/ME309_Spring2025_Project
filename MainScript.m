@@ -22,7 +22,7 @@ clear RawData % This is inserted into the Data struct in the FormatData function
 
 % TODO
 % Compute velocity and accel from sampled data.
-% This is expected to be noisy and innaccurate and serves to demonstrate
+% This is expected to be noisy and innaccurate, but that noise serves to demonstrate
 % the utility of our model.
 %[vx_sampled,vy_sampled,ax_sampled,ay_sampled,hFig_numdif] = numeric_differentiation(t_sampled,x_sampled,y_sampled);
 
