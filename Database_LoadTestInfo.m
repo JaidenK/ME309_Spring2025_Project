@@ -1,4 +1,4 @@
-function [TestNumber,TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber)
+function [TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber)
 
 % The DataDirectory.mat file contains only the variable DataDirectory,
 % which is a string containg the path of the folder containing all the
@@ -7,7 +7,7 @@ function [TestNumber,TestDescription,RawData,ModelParams] = Database_LoadTestInf
 load DataDirectory.mat DataDirectory
 
 % Construct the filename and load the data.
-filename = sprintf("Throw_%0d.txt",TestNumber);
+filename = sprintf("Throw_%02d.txt",TestNumber);
 full_path = fullfile(DataDirectory,filename);
 RawData = readmatrix(full_path);
 
