@@ -1,8 +1,6 @@
-function [t_sampled,x_sampled,y_sampled,xchute_sampled,ychute_sampled,hasChuteData] = FormatData(RawData,DownsamplingValue)
+function [SampledData] = FormatData(RawData,DownsamplingValue)
 %FORMATDATA Summary of this function goes here
 %   Detailed explanation goes here
-
-
 
 y_sampled = RawData(:,3);
 
@@ -32,7 +30,22 @@ if(hasChuteData)
     ychute_sampled = downsample(ychute_sampled,DownsamplingValue);
 end
 
-
+% Toss the data into a struct for organization
+SampledData = struct();
+SampledData.t = t_sampled;
+SampledData.x = x_sampled;
+SampledData.y = y_sampled;
+SampledData.hasChute = hasChuteData;
+if(SampledData.hasChute)
+    SampledData.Chute = struct();
+    SampledData.Chute.x = xchute_sampled;
+    SampledData.Chute.y = ychute_sampled;    
+end
+% Does it make sense to store the raw data in this struct too?
+SampledData.Raw = struct();
+SampledData.Raw.t = RawData(:,1);
+SampledData.Raw.x = RawData(:,2);
+SampledData.Raw.y = RawData(:,3);
 
 end
 
