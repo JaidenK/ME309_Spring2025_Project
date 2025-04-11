@@ -39,6 +39,10 @@ end
 % TODO
 % Use linear regression or gradient descent to fine tune the parameters.
 % E.g. [Model,Error] = GradientDescent(Data,ModelParams,nIterations)
+% Gradient descent algorithm shown here (messy):
+% https://github.com/JaidenK/ME309_Spring2025_Project/blob/JaidensBranch/TrajEst_TopScript.m
+% Linear regression would be better if we can figure out how to linearize
+% the system.
 
 % TODO 
 % Model with linear drag
@@ -53,4 +57,9 @@ QuickPlot_Combined_Position(Model,Data,Error);
 
 % TODO: Plot to compare numeric differentiation results with model (noise
 % comparison)
+
+% TODO: We should step through each sample data point and calculate the
+% estimated impact location using the data up to that point. This can then
+% be used to generate a histogram of the predicted landing locations to
+% show how much it deviates over the arc. 
 
