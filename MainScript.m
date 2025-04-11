@@ -1,12 +1,24 @@
 clear all; close all; clc;
 
 %% Input/Configuration
-TestNumber = 1;
+TestNumber = 2;
 DownsamplingValue = 5;
 
-%%
+%% Load the data
 [TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber);
-SampledData = FormatData(RawData,DownsamplingValue);
+Data = FormatData(RawData,DownsamplingValue);
+% Lump some info into the struct to make it easier to pass around to
+% functions (rather than relying on workspace variables directly)
+Data.Info = struct();
+Data.Info.TestNumber = TestNumber;
+Data.Info.Description = TestDescription;
+Data.Info.DownsamplingValue = DownsamplingValue;
+% Clear the old vars from workspace to enforce consistency with struct
+% usage
+clear TestNumber
+clear TestDescription
+clear DownsamplingValue
+clear RawData % This is inserted into the Data struct in the FormatData function
 
 % TODO
 % Compute velocity and accel from sampled data.
@@ -17,7 +29,6 @@ SampledData = FormatData(RawData,DownsamplingValue);
 % Generate Model
 [Model] = GenerateModel_NoDrag(ModelParams);
 
-
-
-QuickPlot_SampledData(SampledData);
+QuickPlot_SampledData_Position(Data);
+QuickPlot_Model_Position(Model);
 

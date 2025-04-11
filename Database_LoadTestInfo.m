@@ -18,6 +18,7 @@ TestDescription = "[No Description]";
 switch(TestNumber)
     case 1
         TestDescription = "Ball; No Chute; Low Arc";
+        ModelParams = [1,1,1,1,0.1];
     case 2
         TestDescription = "Ball; No Chute; High Arc";
         ModelParams = [1.283122106137774,1.642406551663037,-0.204654716244155,8.907081047040949,0.044127261050646];
