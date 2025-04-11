@@ -25,4 +25,10 @@ for t0=5:100
     Model.tImpact = fzero(Model.pos_of_t.y,t0);
 end
 
+% Estimate location of impact
+Model.xImpact = Model.pos_of_t.x(Model.tImpact);
+
+% Estimate velocity of impact
+Model.vImpact = vecnorm([Model.vel_of_t.x(Model.tImpact) Model.vel_of_t.y(Model.tImpact)]);
+
 end
