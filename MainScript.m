@@ -1,8 +1,9 @@
-clear all; close all; clc;
+%clear all; close all; clc;
 
 %% Input/Configuration
 TestNumber = 5;
 DownsamplingValue = 10;
+forceInitialParameterEstimation = false;
 
 %% Load the data
 [TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber);
@@ -26,21 +27,24 @@ clear RawData % This is inserted into the Data struct in the FormatData function
 % the utility of our model.
 %[vx_sampled,vy_sampled,ax_sampled,ay_sampled,hFig_numdif] = numeric_differentiation(t_sampled,x_sampled,y_sampled);
 
-% TODO
 % Generate model parameters based on the data. 
 % Initial guess can come from the first 2 sample points.
-% Use linear regression or gradient descent to fine tune the parameters.
-% For now I'm using the parameters found in my other repo branch.
-if(ModelParams(1) == 0)
+if(forceInitialParameterEstimation || (ModelParams(1) == 0))
+    disp("Estimating initial parameters.");
     ModelParams = EstimateInitialModelParams(Data);
+else
+    disp("Using initial parameters from database.");
 end
 
-% Generate Model
+% TODO
+% Use linear regression or gradient descent to fine tune the parameters.
 [Model] = GenerateModel_NoDrag(ModelParams);
-
 [Error] = ComputeError(Data,Model);
 
 QuickPlot_SampledData_Position(Data);
 QuickPlot_Model_Position(Model);
 QuickPlot_Combined_Position(Model,Data,Error);
+
+% TODO: Plot to compare numeric differentiation results with model (noise
+% comparison)
 
