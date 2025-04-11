@@ -1,6 +1,8 @@
 function [SampledData] = FormatData(RawData,DownsamplingValue)
-%FORMATDATA Summary of this function goes here
-%   Detailed explanation goes here
+
+% If we wanted to limit the data to only the first portion of the throw to
+% simulate evaluating mid-flight, we'd do that somewhere in this function
+% probably.
 
 % Remove all rows containing NaN
 RawData(any(isnan(RawData), 2), :) = []; % https://www.mathworks.com/matlabcentral/answers/31971-delete-rows-with-nan-records
@@ -23,7 +25,6 @@ if(size(RawData,2)>3)
     ychute_sampled = RawData(1:iImpact,5);
     hasChuteData = true;
 end
-
 
 t_sampled = downsample(t_sampled,DownsamplingValue);
 x_sampled = downsample(x_sampled,DownsamplingValue);

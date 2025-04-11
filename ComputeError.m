@@ -12,5 +12,7 @@ Error.magnitudes = vecnorm([Error.x(:)';Error.y(:)'])';
 
 Error.SumSquared = sum(Error.magnitudes.^2);
 
+Error.Mean = sqrt(Error.SumSquared)/length(Error.x);
+
 end
 

@@ -30,6 +30,7 @@ switch(TestNumber)
         ModelParams = [-1.871997654204061,2.328357930556231,2.715263611801111,5.872290524153842,0.309757887070275];
     case 5
         TestDescription = "Rubber Duck; No Chute; Low Arc";
+        ModelParams = [0.200000000000000,1.995000000000000,-4.544214285714285,1.476190476190472,0.100000000000000];
     case 6
         TestDescription = "Rubber Duck; No Chute; High Arc";
         ModelParams = [1.28683 1.57797 -1.91877 8.64988 0.221963];

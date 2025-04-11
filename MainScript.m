@@ -1,7 +1,7 @@
 clear all; close all; clc;
 
 %% Input/Configuration
-TestNumber = 4;
+TestNumber = 5;
 DownsamplingValue = 10;
 
 %% Load the data
@@ -31,6 +31,9 @@ clear RawData % This is inserted into the Data struct in the FormatData function
 % Initial guess can come from the first 2 sample points.
 % Use linear regression or gradient descent to fine tune the parameters.
 % For now I'm using the parameters found in my other repo branch.
+if(ModelParams(1) == 0)
+    ModelParams = EstimateInitialModelParams(Data);
+end
 
 % Generate Model
 [Model] = GenerateModel_NoDrag(ModelParams);
