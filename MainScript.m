@@ -1,7 +1,7 @@
-%clear all; close all; clc;
+% clear all; close all; clc;
 
 %% Input/Configuration
-TestNumber = 6;
+TestNumber = 4;
 DownsamplingValue = 10;
 forceInitialParameterEstimation = false;
 
@@ -49,6 +49,7 @@ end
 % https://www.youtube.com/watch?v=Tr_TpLk3dY8
 
 [Model] = GenerateModel_NoDrag(ModelParams);
+%[Model] = GenerateModel_LinearDrag(ModelParams);
 [Error] = ComputeError(Data,Model);
 
 QuickPlot_SampledData_Position(Data);
