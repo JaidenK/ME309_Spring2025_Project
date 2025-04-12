@@ -26,9 +26,12 @@ ylabel("a_y (m/s^2)");
 grid on
 yline(0);
 
-linkaxes([ax1 ax2 ax3 ax4]);
+linkaxes([ax1 ax2],'y');
+linkaxes([ax3 ax4],'y');
+linkaxes([ax1 ax2 ax3 ax4],'x');
 
-sgtitle({sprintf("Test %d Sampled Data",Data.Info.TestNumber),sprintf("Numeric Differentiation (sampling interval=%d)",Data.Info.DownsamplingValue),Data.Info.Description});
+sampling_Hz = 1/mean(diff(Data.t));
+sgtitle({sprintf("Test %d Sampled Data",Data.Info.TestNumber),"Numeric Differentiation",sprintf("Sampling interval=%d (%g Hz)",Data.Info.DownsamplingValue,sampling_Hz),Data.Info.Description});
 
 
 end

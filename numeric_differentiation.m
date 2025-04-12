@@ -1,12 +1,4 @@
 function [Data] = numeric_differentiation(Data)
-%NUMERIC_DIFFERENTIATION Summary of this function goes here
-%   Detailed explanation goes here
-
-
-% Filter position just slightly
-%x = movmean(x,3);
-%y = movmean(y,3);
-%t = movmean(t,3);
 
 Data.vel=struct();
 % Compute simple velocity
