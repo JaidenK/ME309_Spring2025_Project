@@ -25,7 +25,7 @@ clear RawData % This is inserted into the Data struct in the FormatData function
 % Compute velocity and accel from sampled data.
 % This is expected to be noisy and innaccurate, but that noise serves to demonstrate
 % the utility of our model.
-%[vx_sampled,vy_sampled,ax_sampled,ay_sampled,hFig_numdif] = numeric_differentiation(t_sampled,x_sampled,y_sampled);
+[Data] = numeric_differentiation(Data);
 
 % Generate model parameters based on the data. 
 % Initial guess can come from the first 2 sample points.
@@ -44,17 +44,15 @@ end
 % Linear regression would be better if we can figure out how to linearize
 % the system.
 
-% TODO 
-% Model with linear drag
-% https://www.youtube.com/watch?v=Tr_TpLk3dY8
-
 [Model] = GenerateModel_NoDrag(ModelParams);
 %[Model] = GenerateModel_LinearDrag(ModelParams);
 [Error] = ComputeError(Data,Model);
 
+
 QuickPlot_SampledData_Position(Data);
 QuickPlot_Model_Position(Model);
 QuickPlot_Combined_Position(Model,Data,Error);
+QuickPlot_NumericDifferentiation_vel_acc(Data);
 
 % TODO: Plot to compare numeric differentiation results with model (noise
 % comparison)
