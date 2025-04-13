@@ -47,12 +47,11 @@ end
 [Error] = ComputeError(Data,Model);
 
 
-
-
 QuickPlot_SampledData_Position(Data);
 QuickPlot_Model_Position(Model);
 QuickPlot_Combined_Position(Model,Data,Error);
 QuickPlot_NumericDifferentiation_vel_acc(Data);
+QuickPlot_NumericVsModel(Data,Model);
 
 % TODO: Plot to compare numeric differentiation results with model (noise
 % comparison)
