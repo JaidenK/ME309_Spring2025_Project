@@ -3,17 +3,19 @@ function [Model,Error,GradientDescentResults] = GradientDescent_v1(whichModelTyp
 
 GradientDescentResults = struct();
 GradientDescentResults.MeanError = [];
+GradientDescentResults.SumSquaredError = [];
 GradientDescentResults.ParamGradients = [];
 nDimensions = length(ModelParams);
 %NudgeVector = zeros(size(ModelParams));
-epsilon = 0.001;
+epsilon = 0.0001;
 gamma = 0.01;
 minDragCoef = epsilon+0.001;
-nGradientDescentIterations = 300;
+nGradientDescentIterations = 3000;
 
 for i=1:nGradientDescentIterations
     [Error] = ComputeError(Data,GenerateModel(whichModelType,ModelParams));
     GradientDescentResults.MeanError(i) = Error.Mean;
+    GradientDescentResults.SumSquaredError(i) = Error.SumSquared;
 
     ParamGradient = zeros(size(ModelParams));
     % Figure out which direction to step in to by computing partial
