@@ -53,9 +53,6 @@ QuickPlot_Combined_Position(Model,Data,Error);
 QuickPlot_NumericDifferentiation_vel_acc(Data);
 QuickPlot_NumericVsModel(Data,Model);
 
-% TODO: Plot to compare numeric differentiation results with model (noise
-% comparison)
-
 % TODO: We should step through each sample data point and calculate the
 % estimated impact location using the data up to that point. This can then
 % be used to generate a histogram of the predicted landing locations to
