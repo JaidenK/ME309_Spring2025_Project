@@ -1,4 +1,4 @@
-%clear all; close all; clc;
+clear all; close all; clc;
 
 %% Input/Configuration
 TestNumber = 4;
@@ -56,6 +56,7 @@ if(generatePlots)
     QuickPlot_NumericDifferentiation_vel_acc(Data);
     QuickPlot_NumericVsModel(Data,Model);
     QuickPlot_GradientDescentResults_MeanError(Data,GradientDescentResults);
+    QuickPlot_GradientDescentResults_ParamGradient(Data,GradientDescentResults);
 end
 % TODO: We should step through each sample data point and calculate the
 % estimated impact location using the data up to that point. This can then

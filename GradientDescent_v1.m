@@ -5,12 +5,13 @@ GradientDescentResults = struct();
 GradientDescentResults.MeanError = [];
 GradientDescentResults.SumSquaredError = [];
 GradientDescentResults.ParamGradients = [];
+GradientDescentResults.ModelParams = [];
 nDimensions = length(ModelParams);
 %NudgeVector = zeros(size(ModelParams));
 epsilon = 0.0001;
 gamma = 0.01;
 minDragCoef = epsilon+0.001;
-nGradientDescentIterations = 3000;
+nGradientDescentIterations = 500;
 
 for i=1:nGradientDescentIterations
     [Error] = ComputeError(Data,GenerateModel(whichModelType,ModelParams));
@@ -28,6 +29,8 @@ for i=1:nGradientDescentIterations
     end
     GradientDescentResults.ParamGradients(i,:) = ParamGradient;
     ModelParams = ModelParams-gamma*ParamGradient;
+    
+    GradientDescentResults.ModelParams(i,:) = ModelParams;
 
     % Hack: force the drag coefficient to stay within reasonable bounds
     ModelParams(5) = max([ModelParams(5) minDragCoef]);
