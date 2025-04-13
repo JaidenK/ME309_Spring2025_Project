@@ -1,10 +1,11 @@
-clear all; close all; clc;
+%clear all; close all; clc;
 
 %% Input/Configuration
 TestNumber = 4;
 DownsamplingValue = 10;
-forceInitialParameterEstimation = false;
+forceInitialParameterEstimation = true;
 whichModelType = ModelType.LinearDrag;
+generatePlots = true;
 
 %% Load the data
 [TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber);
@@ -46,13 +47,16 @@ end
 [Model] = GenerateModel(whichModelType,ModelParams);
 [Error] = ComputeError(Data,Model);
 
+[Model,Error,GradientDescentResults] = GradientDescent_v1(whichModelType,Data,ModelParams);
 
-QuickPlot_SampledData_Position(Data);
-QuickPlot_Model_Position(Model);
-QuickPlot_Combined_Position(Model,Data,Error);
-QuickPlot_NumericDifferentiation_vel_acc(Data);
-QuickPlot_NumericVsModel(Data,Model);
-
+if(generatePlots)
+    QuickPlot_SampledData_Position(Data);
+    QuickPlot_Model_Position(Model);
+    QuickPlot_Combined_Position(Model,Data,Error);
+    QuickPlot_NumericDifferentiation_vel_acc(Data);
+    QuickPlot_NumericVsModel(Data,Model);
+    QuickPlot_GradientDescentResults_MeanError(Data,GradientDescentResults);
+end
 % TODO: We should step through each sample data point and calculate the
 % estimated impact location using the data up to that point. This can then
 % be used to generate a histogram of the predicted landing locations to

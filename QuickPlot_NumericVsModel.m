@@ -38,7 +38,7 @@ grid on;
 yline(0);
 
 linkaxes([ax1 ax2],'x');
-sgtitle({sprintf("Test %d",Data.Info.TestNumber),"Numeric Differentiation vs Model",sprintf("Sampling interval=%d (%g Hz)",Data.Info.DownsamplingValue,sampling_Hz),Data.Info.Description});
+sgtitle({sprintf("Test %d",Data.Info.TestNumber),sprintf("Numeric Differentiation vs %s",Model.Description),sprintf("Sampling interval=%d (%g Hz)",Data.Info.DownsamplingValue,sampling_Hz),Data.Info.Description});
 
 end
 
