@@ -1,4 +1,4 @@
-function [Model,Error,GradientDescentResults] = GradientDescent_v2(whichModelType,Data,ModelParams)
+function [Model,Error,GradientDescentResults] = GradientDescent_v2(whichModelType,Data,ModelParams,nIterations)
 % https://en.wikipedia.org/wiki/Gradient_descent
 
 GradientDescentResults = struct();
@@ -9,12 +9,11 @@ GradientDescentResults.ModelParams = [];
 nDimensions = length(ModelParams);
 %NudgeVector = zeros(size(ModelParams));
 epsilon = 0.001;
-gamma = 0.01;
+gamma = 0.001;
 minDragCoef = epsilon+0.001;
-maxDragCoef = 1;
-nGradientDescentIterations = 500;
+maxDragCoef = 1-epsilon-0.001;
 
-for i=1:nGradientDescentIterations
+for i=1:nIterations
     [Error] = ComputeError(Data,GenerateModel(whichModelType,ModelParams));
     GradientDescentResults.MeanError(i) = Error.Mean;
     GradientDescentResults.SumSquaredError(i) = Error.SumSquared;
@@ -38,9 +37,20 @@ for i=1:nGradientDescentIterations
         f = @(x)ErrorFunction(x,whichModelType,Data,ModelParams,NudgeVector);        
         ParamGradient(j) = (f(epsilon)-f(-epsilon))/(2*epsilon);
     end
-    GradientDescentResults.ParamGradients(i,:) = ParamGradient;
+
+    % See wikipedia for what the heck this gamma formula is
+    if(i > 1)
+        deltaParams = ModelParams - GradientDescentResults.ModelParams(end,:);
+        deltaGradient = ParamGradient - GradientDescentResults.ParamGradients(end,:);
+        gamma = abs(deltaParams * deltaGradient')/(vecnorm(deltaGradient)^2);
+    else
+        gamma = 0.001;
+    end
+
+
     ModelParams = ModelParams-gamma*ParamGradient;
     
+    GradientDescentResults.ParamGradients(i,:) = ParamGradient;
     GradientDescentResults.ModelParams(i,:) = ModelParams;
 
     % Hack: force the drag coefficient to stay within reasonable bounds

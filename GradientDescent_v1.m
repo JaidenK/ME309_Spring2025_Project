@@ -1,4 +1,4 @@
-function [Model,Error,GradientDescentResults] = GradientDescent_v1(whichModelType,Data,ModelParams)
+function [Model,Error,GradientDescentResults] = GradientDescent_v1(whichModelType,Data,ModelParams,nIterations)
 % https://en.wikipedia.org/wiki/Gradient_descent
 
 GradientDescentResults = struct();
@@ -12,9 +12,8 @@ epsilon = 0.0001;
 gamma = 0.01;
 minDragCoef = epsilon+0.001;
 maxDragCoef = 1;
-nGradientDescentIterations = 500;
 
-for i=1:nGradientDescentIterations
+for i=1:nIterations
     [Error] = ComputeError(Data,GenerateModel(whichModelType,ModelParams));
     GradientDescentResults.MeanError(i) = Error.Mean;
     GradientDescentResults.SumSquaredError(i) = Error.SumSquared;

@@ -2,10 +2,11 @@ clear all; close all; clc;
 
 %% Input/Configuration
 TestNumber = 4;
-DownsamplingValue = 10;
+DownsamplingValue = 5;
 forceInitialParameterEstimation = true;
 whichModelType = ModelType.LinearDrag;
 generatePlots = true;
+nGradientDescentIterations = 500;
 
 %% Load the data
 [TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber);
@@ -47,7 +48,7 @@ end
 [Model] = GenerateModel(whichModelType,ModelParams);
 [Error] = ComputeError(Data,Model);
 
-[Model,Error,GradientDescentResults] = GradientDescent_v2(whichModelType,Data,ModelParams);
+[Model,Error,GradientDescentResults] = GradientDescent_v2(whichModelType,Data,ModelParams,nGradientDescentIterations);
 
 if(generatePlots)
     QuickPlot_SampledData_Position(Data);
