@@ -47,7 +47,7 @@ end
 [Model] = GenerateModel(whichModelType,ModelParams);
 [Error] = ComputeError(Data,Model);
 
-[Model,Error,GradientDescentResults] = GradientDescent_v1(whichModelType,Data,ModelParams);
+[Model,Error,GradientDescentResults] = GradientDescent_v2(whichModelType,Data,ModelParams);
 
 if(generatePlots)
     QuickPlot_SampledData_Position(Data);
