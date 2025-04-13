@@ -1,5 +1,3 @@
-clear all; close all; clc;
-
 %% Input/Configuration
 user_options;
 
@@ -58,6 +56,7 @@ end
 
 if(generatePlots)
     %QuickPlot_Combined_Position(FrameInfo(end/2).Model,FrameInfo(end/2).Data,Error);
-    QuickPlot_ImpactHistogram(ImpactLocations,FrameInfo(end).Data);
     AnimatedPlot_Combined_ImpactPrediction(FrameInfo,ImpactLocations);
+    QuickPlot_ImpactHistogram(ImpactLocations,FrameInfo(end).Data);
+    QuickPlot_ImpactError(ImpactLocations,FrameInfo(end).Data);
 end

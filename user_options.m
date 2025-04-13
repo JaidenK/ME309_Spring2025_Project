@@ -1,6 +1,7 @@
-TestNumber = 4;
+%clear all; close all; clc;
+TestNumber = 6;
 DownsamplingValue = 10;
 forceInitialParameterEstimation = false;
-whichModelType = ModelType.LinearDrag;
+whichModelType = ModelType.NoDrag;
 generatePlots = true;
-nGradientDescentIterations = 100;
+nGradientDescentIterations = 50;

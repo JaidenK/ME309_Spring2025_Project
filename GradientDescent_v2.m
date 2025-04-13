@@ -42,10 +42,19 @@ for i=1:nIterations
     if(i > 1)
         deltaParams = ModelParams - GradientDescentResults.ModelParams(end,:);
         deltaGradient = ParamGradient - GradientDescentResults.ParamGradients(end,:);
-        gamma = abs(deltaParams * deltaGradient')/(vecnorm(deltaGradient)^2);
+        newgamma = abs(deltaParams * deltaGradient')/(vecnorm(deltaGradient)^2);
+        if(~isnan(newgamma))
+            gamma = newgamma;
+        else
+            disp("NaN Gamma"); % If this is spamming the console then there's a bug
+        end
     else
         gamma = 0.001;
     end
+    if(gamma == 0) % hack
+        gamma = 0.001;
+    end
+
     
     ModelParams = ModelParams-gamma*ParamGradient;
     
