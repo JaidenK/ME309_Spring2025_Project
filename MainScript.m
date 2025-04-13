@@ -1,12 +1,12 @@
 clear all; close all; clc;
 
 %% Input/Configuration
-TestNumber = 4;
-DownsamplingValue = 5;
-forceInitialParameterEstimation = true;
+TestNumber = 2;
+DownsamplingValue = 1;
+forceInitialParameterEstimation = false;
 whichModelType = ModelType.LinearDrag;
 generatePlots = true;
-nGradientDescentIterations = 500;
+nGradientDescentIterations = 250;
 
 %% Load the data
 [TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber);
@@ -36,14 +36,6 @@ if(forceInitialParameterEstimation || (ModelParams(1) == 0))
 else
     disp("Using initial parameters from database.");
 end
-
-% TODO
-% Use linear regression or gradient descent to fine tune the parameters.
-% E.g. [Model,Error] = GradientDescent(Data,ModelParams,nIterations)
-% Gradient descent algorithm shown here (messy):
-% https://github.com/JaidenK/ME309_Spring2025_Project/blob/JaidensBranch/TrajEst_TopScript.m
-% Linear regression would be better if we can figure out how to linearize
-% the system.
 
 [Model] = GenerateModel(whichModelType,ModelParams);
 [Error] = ComputeError(Data,Model);

@@ -46,8 +46,7 @@ for i=1:nIterations
     else
         gamma = 0.001;
     end
-
-
+    
     ModelParams = ModelParams-gamma*ParamGradient;
     
     GradientDescentResults.ParamGradients(i,:) = ParamGradient;
