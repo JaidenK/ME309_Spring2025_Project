@@ -1,12 +1,7 @@
 clear all; close all; clc;
 
 %% Input/Configuration
-TestNumber = 2;
-DownsamplingValue = 1;
-forceInitialParameterEstimation = false;
-whichModelType = ModelType.LinearDrag;
-generatePlots = true;
-nGradientDescentIterations = 250;
+user_options;
 
 %% Load the data
 [TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber);

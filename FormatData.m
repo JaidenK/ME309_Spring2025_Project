@@ -50,6 +50,7 @@ SampledData.Raw = struct();
 SampledData.Raw.t = RawData(:,1);
 SampledData.Raw.x = RawData(:,2);
 SampledData.Raw.y = RawData(:,3);
+SampledData.Raw.iImpact = iImpact;
 
 end
 
