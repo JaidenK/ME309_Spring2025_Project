@@ -14,17 +14,6 @@ Model.vel_of_t.y = @(t) (exp(-(b*t)/m)*(b*v0(2)+g*m)-g*m)/b;
 Model.pos_of_t.x = @(t) ((m*v0(1))/(b))*(1-exp(-b*t/m)) + r0(1); 
 Model.pos_of_t.y = @(t) (m/b)*(v0(2)+m*g/b)*(1-exp(-b*t/m))-(m*g*t/b) + r0(2);
 
-% Constants
-    % m = 1;
-    % g = 9.81;
-    % % params
-    % x0 = [params(1) params(2)];
-    % u = [params(3) params(4)];
-    % b = params(5);
-    % % Functions
-    % fx = @(t) ((m*u(1))/(b))*(1-exp(-b*t/m)) + x0(1);
-    % fy = @(t) (m/b)*(u(2)+m*g/b)*(1-exp(-b*t/m))-(m*g*t/b) + x0(2);
-
 % Estimate time of impact
 % Make sure the estimated impact time is positive by looping while it's
 % negative.

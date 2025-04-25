@@ -47,6 +47,8 @@ for frameNo = nSamples:Data.Raw.iImpact
     
     [Model,Error,GradientDescentResults] = GradientDescent_v2(whichModelType,Data,ModelParams,nGradientDescentIterations);
     
+    ModelParams = Model.Params;
+
     %FrameInfo(frameNo) = struct();
     FrameInfo(frameNo).Data = Data;
     FrameInfo(frameNo).Model = Model;   
