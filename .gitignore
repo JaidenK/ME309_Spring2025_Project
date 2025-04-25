@@ -4,3 +4,5 @@ Report/*.log
 Report/*.aux
 Report/*.out
 *.asv
+*.bkp
+*.dtmp

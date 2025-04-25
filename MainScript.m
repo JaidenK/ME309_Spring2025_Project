@@ -44,8 +44,3 @@ if(generatePlots)
     QuickPlot_GradientDescentResults_MeanError(Data,GradientDescentResults);
     QuickPlot_GradientDescentResults_ParamGradient(Data,GradientDescentResults);
 end
-% TODO: We should step through each sample data point and calculate the
-% estimated impact location using the data up to that point. This can then
-% be used to generate a histogram of the predicted landing locations to
-% show how much it deviates over the arc. 
-
