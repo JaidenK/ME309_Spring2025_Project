@@ -30,8 +30,8 @@ else
     disp("Using initial parameters from database.");
 end
 
-[Model] = GenerateModel(whichModelType,ModelParams);
-[Error] = ComputeError(Data,Model);
+%[Model] = GenerateModel(whichModelType,ModelParams);
+%[Error] = ComputeError(Data,Model);
 
 [Model,Error,GradientDescentResults] = GradientDescent_v2(whichModelType,Data,ModelParams,nGradientDescentIterations);
 

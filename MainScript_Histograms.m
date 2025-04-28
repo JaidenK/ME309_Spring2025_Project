@@ -31,13 +31,14 @@ end
 % valid analogy to a realtime system with a low sampling rate but it's 
 % late and idgaf. 
 
-nSamples = 5; % minimum of 5 samples because 5 unknowns in the model.
+nSamples = 10; % minimum of 5 samples because 5 unknowns in the model.
 
 FrameInfo = [struct()];
 ImpactLocations = [];
 
 for frameNo = nSamples:Data.Raw.iImpact
-    iSample = round(linspace(1,frameNo,nSamples));
+    %iSample = round(linspace(1,frameNo,nSamples));
+    iSample = round((frameNo-1)*log10(linspace(1,10,nSamples)))+1;
     Data.t = Data.Raw.t(iSample);
     Data.x = Data.Raw.x(iSample);
     Data.y = Data.Raw.y(iSample);
