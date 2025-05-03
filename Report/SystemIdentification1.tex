@@ -4,16 +4,25 @@ Consider our system of a parachute attached to a spherical mass by a string bein
 
 First it's important to identify what properties of the system we're actually interested in. Here we've decided we're interested in modeling the trajectory of the center of mass of the ball. Some things we aren't interested in are the motion of the parachute, the mass of the ball, the elasticity of the ball, the color of the ball, the temperature of the room, the location of the moon in relation to the Earth, what you had for breakfast, etc. 
 
-Everything in the universe is connected\footnote{This is readily apparent by considering gravity or electromagnetism.} and where we choose to draw the line may seem arbitrary. Obviously we won't be modeling every atom of our system and all the forces they're experiencing, but there are still a handful of reasonable options:
+Everything in the universe is connected\footnote{This is readily apparent by considering gravity or electromagnetism.} and where we choose to draw the line may seem arbitrary. Obviously we won't be modeling every atom of our system and all the forces they're experiencing, and yet there are still a handful of reasonable options:
 
-\begin{enumerate}
-\item Point Mass, No Drag\footnote{ADD FIGURE: Freebody diagram}
+\begin{itemize}
+\item Point Mass, No Drag
 
-The ball-chute system could be modeled as a single point mass in a vacuum traveling on a parabolic trajectory. This would certainly miss 
+The ball-chute system could be modeled as a single point mass in a vacuum traveling on a parabolic trajectory. This would certainly lead to inaccuracies once a large parachute is used, but it may be a decent approximation in low-drag scenarios. \footnote{ADD FIGURE: Freebody diagram}
 
-\item Point Mass, Linear Drag\footnote{ADD FIGURE: Freebody diagram}
+\item Point Mass, Linear Drag 
 
+The simplest way to incorporate air resistance into our model is as a force proportional to the velocity of the ball.\footnote{ADD FIGURE: Freebody diagram}
 
+\item Point Mass, Velocity-Squared Drag
 
-\end{enumerate}
+At higher velocities, the effect of drag tends to depart from a simple linear relationship towards a velocity squared relationship
 
+\item Multi-body System
+
+The intention of the parachute was simply to increase the drag of the ball, but it's certainly more complicated than that in reality. A more accurate model of the system would represent the ball and parachute as separate bodies, potentially even modeling the off-center attachment point of the parachute. 
+
+\end{itemize}
+
+With all these options available to us, we rely on the following principle: keep it simple. We don't want to over-complicate things unless we know that we have to. Following this principle, we'll start by modeling our system as a point mass with no drag. 
