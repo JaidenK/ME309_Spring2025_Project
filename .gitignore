@@ -6,3 +6,5 @@ Report/*.out
 *.asv
 *.bkp
 *.dtmp
+Report/Report_Main.dvi
+Report/Report_Main.toc
