@@ -9,11 +9,11 @@ Everything in the universe is connected\footnote{This is readily apparent by con
 \begin{itemize}
 \item Point Mass, No Drag
 
-The ball-chute system could be modeled as a single point mass in a vacuum traveling on a parabolic trajectory. This would certainly lead to inaccuracies once a large parachute is used, but it may be a decent approximation in low-drag scenarios. \footnote{ADD FIGURE: Freebody diagram}
+The ball-chute system could be modeled as a single point mass in a vacuum traveling on a parabolic trajectory. This would certainly lead to inaccuracies once a large parachute is used, but it may be a decent approximation in low-drag scenarios. Fig.~\ref{fig:Freebody1}.
 
 \item Point Mass, Linear Drag 
 
-The simplest way to incorporate air resistance into our model is as a force proportional to the velocity of the ball.\footnote{ADD FIGURE: Freebody diagram}
+The simplest way to incorporate air resistance into our model is as a force proportional to the velocity of the ball. Fig.~\ref{fig:Freebody2}.
 
 \item Point Mass, Velocity-Squared Drag
 
@@ -24,6 +24,18 @@ At higher velocities, the effect of drag tends to depart from a simple linear re
 The intention of the parachute was simply to increase the drag of the ball, but it's certainly more complicated than that in reality. A more accurate model of the system would represent the ball and parachute as separate bodies, potentially even modeling the off-center attachment point of the parachute. 
 
 \end{itemize}
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=1]{images/Freebody1.png}
+\caption{\label{fig:Freebody1} Free-body diagram for a point mass experiencing free-fall.}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=1]{images/Freebody2.png}
+\caption{\label{fig:Freebody2} Free-body diagram for a point mass feeling the force of gravity and an aerodynamic drag force proportional to its velocity with opposite direction.}
+\end{figure}
 
 With all these options available to us, we refer to the following principle: keep it simple. We don't want to over-complicate things unless we know that we have to. We don't want to waste effort optimizing something until we know it's a bottleneck. Following this principle, we'll start by modeling our system as a point mass with no drag. There are several benefits to following this approach. 
 
