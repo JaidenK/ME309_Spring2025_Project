@@ -1,9 +1,20 @@
 \babel@toc {english}{}\relax 
-\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
-\contentsline {section}{\numberline {2}Data Collection}{2}{section.2}%
-\contentsline {section}{\numberline {3}System Identification}{2}{section.3}%
-\contentsline {section}{\numberline {4}Computer Software Design}{2}{section.4}%
-\contentsline {section}{\numberline {5}Results Analysis}{2}{section.5}%
-\contentsline {section}{\numberline {6}System Identification 2}{2}{section.6}%
-\contentsline {section}{\numberline {7}Results Analysis 2}{2}{section.7}%
-\contentsline {section}{\numberline {8}Conclusion}{2}{section.8}%
+\contentsline {section}{\numberline {0.1}Introduction}{1}{section.0.1}%
+\contentsline {subsection}{\numberline {0.1.1}Selecting a Phenomenon}{2}{subsection.0.1.1}%
+\contentsline {section}{\numberline {0.2}Data Collection}{3}{section.0.2}%
+\contentsline {section}{\numberline {0.3}System Identification}{3}{section.0.3}%
+\contentsline {subsection}{\numberline {0.3.1}Generic Model Structure}{6}{subsection.0.3.1}%
+\contentsline {subsection}{\numberline {0.3.2}Parabolic Model}{7}{subsection.0.3.2}%
+\contentsline {section}{\numberline {0.4}Computer Software Design}{8}{section.0.4}%
+\contentsline {subsection}{\numberline {0.4.1}Functional Requirements}{8}{subsection.0.4.1}%
+\contentsline {subsection}{\numberline {0.4.2}Design Requirements}{8}{subsection.0.4.2}%
+\contentsline {subsection}{\numberline {0.4.3}System Design}{9}{subsection.0.4.3}%
+\contentsline {section}{\numberline {0.5}Algorithms and Patterns}{10}{section.0.5}%
+\contentsline {subsection}{\numberline {0.5.1}Model Factory}{10}{subsection.0.5.1}%
+\contentsline {subsection}{\numberline {0.5.2}Numeric Differentiation}{11}{subsection.0.5.2}%
+\contentsline {subsection}{\numberline {0.5.3}Gradient Descent}{11}{subsection.0.5.3}%
+\contentsline {section}{\numberline {0.6}Results Analysis}{12}{section.0.6}%
+\contentsline {section}{\numberline {0.7}System Identification 2}{12}{section.0.7}%
+\contentsline {section}{\numberline {0.8}Results Analysis 2}{12}{section.0.8}%
+\contentsline {section}{\numberline {0.9}Conclusion}{12}{section.0.9}%
+\contentsline {section}{\numberline {0.10}MISC (Remove before submitting)}{12}{section.0.10}%
