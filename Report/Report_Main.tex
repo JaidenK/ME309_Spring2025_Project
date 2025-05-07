@@ -1,7 +1,8 @@
-\documentclass[12pt,english]{report}
+\documentclass[12pt,english]{article}
 \usepackage[T1]{fontenc} % https://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
 \usepackage{babel} %https://tex.stackexchange.com/questions/27740/whats-the-benefit-of-loading-babel-when-writing-in-english
 \usepackage{subcaption} % https://tex.stackexchange.com/questions/119984/subfigures-side-by-side-with-captions
+\usepackage[toc,page]{appendix} % https://tex.stackexchange.com/questions/49643/making-appendix-for-thesis
 
 \input{./libraries/packages.tex}
 \input{./libraries/macros.tex}
@@ -22,11 +23,15 @@
 	Schnider, Nathan\\
 	\texttt{nathan.schnider.455@my.csun.edu}
 }
-\title{\includegraphics[width=0.2\linewidth]{images/CSUNS.png}\\
-Trajectory Estimation of a Ballistic Projectile Experiencing Aerodynamic Drag\\\large{An Exercise in Modeling Our World\\ME 309 - Numerical Analysis of Engineering Systems}}
+\title{\includegraphics[width=1.2in]{images/CSUNS.png}\\
+Trajectory Estimation of a Ballistic Projectile Experiencing Aerodynamic Drag\\
+\medskip\large{An Exercise in Modeling Our World\\\medskip ME 309 - Numerical Analysis of Engineering Systems\\California State University Northridge\\Department of Mechanical Engineering\\Dr. Maya Pishvar\\Group 4}\\}
 
 \begin{document}
 \maketitle
+\newpage
+
+\input{Abstract.tex}
 
 \tableofcontents
 
@@ -35,7 +40,7 @@ Trajectory Estimation of a Ballistic Projectile Experiencing Aerodynamic Drag\\\
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.5\linewidth]{images/BallMidFlight.png}
-\caption{\label{fig:BallMidFlight} A photograph of our system. The system consists of a projectile traveling on an arc through the air after being thrown with some initial velocity. A drogue chute has been attached with the intention of linearly varying the aerodynamic drag, though it may have more dynamic impacts than intended.}
+\caption{\label{fig:BallMidFlight} A photograph of our system. The system consists of a projectile traveling on an arc through the air after being thrown with some initial velocity. A drogue chute has been attached with the intention of linearly varying the aerodynamic drag, though it may have more dynamic impacts than intended. The pixelated quality is one source of error, as it's difficult to precisely track the center of the projectile.}
 \end{figure}
 % To reference the figure by number: Fig.~\ref{fig:BallMidFlight}
 
@@ -55,11 +60,15 @@ Trajectory Estimation of a Ballistic Projectile Experiencing Aerodynamic Drag\\\
 \input{SystemIdentification2.tex}
 \input{Analysis2.tex}
 \input{FutureWork.tex}
-\input{ErrorSources.tex}
+%\input{ErrorSources.tex}
 \input{LessonsLearned.tex}
 \input{Conclusion.tex}
+
+\begin{appendices}
+
 \input{Acknowledgments.tex}
 \input{Questions.tex}
 \input{References.tex}
 
+\end{appendices}
 \end{document}

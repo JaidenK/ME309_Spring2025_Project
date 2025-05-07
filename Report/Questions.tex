@@ -1,4 +1,66 @@
 \section{Questions}
 
-\TODO Copy+paste from Canvas more or less
+Several questions have been asked by our peers in response to the presentation accompanying this report. Some of the Q\&A has been copied verbatim here.
 
+\medskip 
+
+\textit{Why do you suspect the deviation happened more around the beginning and end of the trajectory, whereas the data around the middle appeared to follow the parabolic path?}
+
+\smallskip
+
+The effects of drag are less pronounced at lower velocities, and the apex of the trajectory experiences the lowest velocity. I think this is why the parabolic model fits best near the apex. Additionally, even with drag in the model there are still unmodeled dynamics from the way the parachute interacts with the ball. The parachute sort of oscillates around in a way I didn't anticipate during planning. 
+
+\medskip 
+
+\textit{Did you have a method of standardizing your physical experiments, such as having the same person throw the mass from (approximately) the same location every time?}
+
+\smallskip
+
+Yes, we had Richard write up a test procedure that we followed during filming to keep our tests standardized. We also had tape marked on the floor and predefined thresholds for where the projectile had to land to qualify it as a valid throw. The filming location itself (well lit, lots of right angles, solid color background) was also chosen to help standardize the process.
+
+
+\medskip 
+
+\textit{I know you mentioned having a lot of sources for error, which do you think impacted your data the most?}
+
+\smallskip
+
+One of the challenge with Tracker is that the automatic tracker (as opposed to manually tracking it frame by frame) will drift away from the center of mass of the tracked object. I manually correct that drift every few frames, and this shows up as spike in the velocity plot and an even larger spike in the acceleration plot. That's probably the most noticeable source of error within the context of the project. If we integrated this work into a larger system, other error sources would become more important.
+
+\medskip 
+
+\textit{Would your data have been more accurate if you used a camera with higher frames to capture more moments and give a more accurate representation of the trajectory since you wont miss a single small detail?}
+
+\smallskip
+
+A higher framerate camera would have reduced the motion blur in the video, allowing us to have higher quality (less noise) input data. That definitely would have helped. However, the sampling rate itself wasn't the deciding factor in accuracy. We actually downsample the data for the majority of the processing to speed up computation. 
+
+If our model treated the ball and parachute as a multibody system then the answer might be different, but as a point mass either with or without drag I think the 240fps sampling rate of our camera was adequate. 
+
+\medskip 
+
+\textit{How did you guys choose the CSUN gym as a place for physical tests?}
+
+\smallskip
+
+We first discussed some general filming location requirements, such as the lighting, background, overall space, and reference features. We came up with a few ideas, including the handball courts. Then a couple team members scouted the location and took photos of the area and put them on Google Drive so we could review them. Once the photos were reviewed and we agreed the location looked good we developed our procedure to use the court specifically (taking advantage of the patterns on the ground, etc). 
+
+\medskip 
+
+\textit{since you tested multiple parachute designs and varied the launch conditions, did you notice any patterns in how certain parachute shapes responded to directional changes in the throw? For instance, did some designs tend to veer off course or rotate more depending on the launch direction? Additionally, how did these behaviors show up in the Tracker software, were they easy to detect, or did they create challenges in accurately capturing the motion?}
+
+\smallskip
+
+We tested multiple different sizes of parachute, but they all had the same basic conical design. The behavior of the chutes was quite variable even among different throws with the same chute, so it's hard to draw conclusions between different chute designs. The larger parachute (we used 3 sizes in total) produced noticeably more drag than the smaller ones. The unmodeled dynamics were definitely larger in magnitude with the larger chute, but if I recall correctly they were roughly of the same nature.  
+
+An example of some unmodeled behavior includes how the strings on the chute go slack during the apex of the trajectory, and then how the chute whips around when the ball starts to fall again. This behavior happened for both the small and large chutes, but has a larger magnitude on larger chutes. 
+
+In Tracker we tracked the chutes as a second body (this data wasn't shown in any of the plots). We attempted to correlate the chute position to the angle, but didn't produce any results clear enough to include in the presentation. 
+
+\medskip 
+
+\textit{Are there ways to implement bounce and possibly predict that?}
+
+\smallskip
+
+Yep! The simplest way to model bounce would be to simply flip the vertical component of the velocity when it impacts the ground. You could also incorporate a coefficient of restitution to model energy lost in the bounce. It would be more complicated if you wanted to model a spinning object hitting the ground. 
