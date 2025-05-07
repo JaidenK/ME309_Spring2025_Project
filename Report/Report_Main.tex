@@ -16,14 +16,14 @@
 	Rojas, Richard\\
 	\texttt{richard.rojas.717@my.csun.edu}
 	\and
-	Schnider, Nathan\\
-	\texttt{nathan.schnider.455@my.csun.edu}
-	\and
 	Thomas, Ryan\\
 	\texttt{ryan.thomas.732@my.csun.edu}
+	\and
+	Schnider, Nathan\\
+	\texttt{nathan.schnider.455@my.csun.edu}
 }
 \title{\includegraphics[width=0.2\linewidth]{images/CSUNS.png}\\
-Trajectory Estimation of a Ballistic Projectile Experiencing Aerodynamic Drag\\\large{An Exercise in Modeling Our World}}
+Trajectory Estimation of a Ballistic Projectile Experiencing Aerodynamic Drag\\\large{An Exercise in Modeling Our World\\ME 309 - Numerical Analysis of Engineering Systems}}
 
 \begin{document}
 \maketitle
@@ -37,8 +37,15 @@ Trajectory Estimation of a Ballistic Projectile Experiencing Aerodynamic Drag\\\
 \includegraphics[width=0.5\linewidth]{images/BallMidFlight.png}
 \caption{\label{fig:BallMidFlight} A photograph of our system. The system consists of a projectile traveling on an arc through the air after being thrown with some initial velocity. A drogue chute has been attached with the intention of linearly varying the aerodynamic drag, though it may have more dynamic impacts than intended.}
 \end{figure}
-
 % To reference the figure by number: Fig.~\ref{fig:BallMidFlight}
+
+%% QR Code
+\begin{figure}[t]
+\centering
+\includegraphics[height=1.5in]{images/GitHubQR.png}
+\caption{\label{fig:GitHubQR} Complete source code and data available on GitHub. \href{https://github.com/JaidenK/ME309\_Spring2025\_Project}{https://github.com/JaidenK/ME309\_Spring2025\_Project}}
+\end{figure}
+
 
 \input{introduction.tex}
 \input{DataCollectionMethodology.tex}
@@ -53,25 +60,5 @@ Trajectory Estimation of a Ballistic Projectile Experiencing Aerodynamic Drag\\\
 \input{Acknowledgments.tex}
 \input{Conclusion.tex}
 \input{References.tex}
-
-\section{MISC (Remove before submitting)}
-
-
-\newpage
-% Linear Drag Model
-\begin{align*}
-\begin{cases} 
-\displaystyle \ddot{\bf r}(t) = \left[-\frac{1}{m}e^{-bt/m}(b\dot{\bf r}_{0y}+gm)\right]\hat{y} + \left[-\frac{b}{m}\dot{\bf r}_{0x}e^{-bt/m}\right]\hat{x} 
-\\
-\displaystyle \dot{\bf r}(t) = \left[\frac{1}{b}e^{-bt/m}(b\dot{\bf r}_{0y}+gm)-\frac{gm}{b}\right]\hat{y} + \left[\dot{\bf r}_{0x}e^{-bt/m}\right]\hat{x} 
-\\
-\displaystyle {\bf r}(t) = \left[\frac{m}{b}(\dot{\bf r}_{0y}+\frac{mg}{b})(1-e^{-bt/m})-\frac{mgt}{b}\right]\hat{y} + \left[\frac{m\dot{\bf r}_{0x}}{b}(1-e^{-bt/m})\right]\hat{x} + {\bf r}_0
-\end{cases}
-\end{align*}
-where ${\bf r}_0$ is the initial position and $\dot{\bf r}_0$ is the initial velocity. We will set $m=1$ and $b$ will be fit by gradient descent.
-
-\begin{align*}
-\text{velocity} = \frac{\Delta \text{position}}{\Delta \text{time}}
-\end{align*}
 
 \end{document}
