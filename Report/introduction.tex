@@ -16,19 +16,19 @@ We're interested in modeling a phenomenon which is simple enough in scope to imp
     \centering
     \begin{subfigure}[t]{0.5\textwidth}
         \centering
-        \includegraphics[height=1.2in]{a}
-        \caption{Lorem ipsum}
+        \includegraphics[height=1.5in]{images/CIWS.jpg}
+        \caption{}
     \end{subfigure}%
     ~ 
     \begin{subfigure}[t]{0.5\textwidth}
         \centering
-        \includegraphics[height=1.2in]{b}
-        \caption{Lorem ipsum, lorem ipsum,Lorem ipsum, lorem ipsum,Lorem ipsum}
+        \includegraphics[height=2.5in]{images/Durian.png}
+        \caption{}
     \end{subfigure}
-    \caption{Caption place holder}
+    \caption{\label{fig:IntroApplications} The need to predict trajectories arises in many disciplines. (a) Close-In Weapon Systems (CIWS) are carefully designed by highly trained engineers to detect and neutralize airborne threats. \href{https://missiledefenseadvocacy.org/defense-systems/goalkeeper-close-in-weapons-system-ciws/}{https://missiledefenseadvocacy.org/defense-systems/goalkeeper-close-in-weapons-system-ciws/} (b) A highly evolved human worker predicts the trajectory of a falling durian fruit during harvest. \href{https://www.tiktok.com/@nut\_558}{https://www.tiktok.com/@nut\_558}}
 \end{figure*}
 
-Consider the phenomenon of an object flying through the air. A wide variety of applications depend on the ability to accurately predict the future location of such flying objects. Examples of automated computer systems tracking projectile objects are abundant in the fields of missile/drone guidance and missile/drone defense.\footnote{ADD FIGURE: CIWS} Beyond automated systems, human minds have to compute trajectories in many scenarios. Many sports require throwing and catching balls, and even in agriculture there is a need to predict trajectories.\footnote{ADD FIGURE: Durian harvest}
+Consider the phenomenon of an object flying through the air. A wide variety of applications depend on the ability to accurately predict the future location of such flying objects. Examples of automated computer systems tracking projectile objects are abundant in the fields of missile/drone guidance and missile/drone defense (Fig.~\ref{fig:IntroApplications}(a)). Beyond automated systems, human minds have to compute trajectories in many scenarios. Many sports require throwing and catching balls, and even in agriculture there is a need to predict trajectories (Fig.~\ref{fig:IntroApplications}(b)).
 
 We're going to model an object traveling on a ballistic trajectory. We will take samples of the position of some object over time, then use those samples to fit a trajectory, then use that trajectory to predict where the object will impact the ground.
 

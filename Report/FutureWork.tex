@@ -1,4 +1,34 @@
-\section{Future Work}
+\section{Applications and Future Work}
 
-Philosophers have hitherto only interpreted the world in various ways; the point is to change it. By which we mean there's little point in simply analyzing the trajectory without actually using that information to do something useful. Here will discuss what some applications of this project might be, and what would need to be worked on to make it a reality.
+Philosophers have hitherto only interpreted the world in various ways; the point is to change it. By which we mean there's little point in simply analyzing the trajectory without actually using that information to do something useful. Here we'll discuss what some applications of this project might be, and what would need to be worked on to make it a reality.
 
+\subsection{Engineering Applications}
+Drag Comparison - This system could be used as-is for comparing drag coefficients between different projectile designs. While this system isn't great for determining the drag coefficient of an object in isolation (because it assumes the mass is 1), it could still be used for comparing the drag of multiple irregularly shaped but equal mass objects. However, a comparison of this nature could be completed with a simpler system so I might consider this an underutilization of our project. 
+
+Gravity Calibration - Suppose you had a system designed to provide a constant vertical force offset to counteract gravity. Such a system might be used if you were developing a robot to fly on Mars, for example. If we tweaked our system to fit the model's gravity parameter, we could use that info to calibrate our gravity offset equipment. 
+
+\subsection{Real-Time Applications}
+If we are able to get this code running in real-time, the limits of the applications would be beyond the scope of this paper. Taking real-time position information and predicting the trajectory could be used for anything from missile defense to fruit harvesting, as mentioned in the intro. The following changes would be necessary to enable real-time operations:
+\begin{itemize}
+
+\item The 3rd Dimension
+
+Our code only operates in 2 axes currently. It should be quite straightforward to add a second horizontal axis, and that would probably be necessary for most real world applications.
+
+\item Linearization 
+
+Linearizing the error function would allow us to use a linear regression to fit the trajectory, which would be much faster computationally as well as more accurate. It's possible the current algorithm might run in real-time with enough compute, but optimizing the algorithm with linearization would allow the application to be embedded in a wider variety of hardware.
+ 
+\item Data input stream 
+
+We are currently reading in data by opening a file and reading all the contents at once. To run in real time we might first start by modifying the code to use something like a serial interface. A separate issue would then be what hardware and software to use to generate the position data in real time, since Tracker doesn't do that. MATLAB does have computer vision toolboxes available, so that's something to look into.
+
+\item Data output stream.
+
+Similar to the data input, we'd need a data output. The output content could simply be the impact location, or maybe it's the model parameters. Perhaps another serial stream would do the trick. That would then need to be processed by some other system that can use that information to control actuators to accomplish some desired task. 
+
+\item Miscellaneous Algorithm Tweaks
+
+To account for unmodeled dynamics, tweaks are constantly made to the algorithm. One tweak could be to weight the error terms for the fitting process more strongly if they're more recent data.
+
+\end{itemize}
