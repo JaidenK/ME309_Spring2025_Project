@@ -12,6 +12,22 @@ In this paper we shall identify some physical phenomenon, develop a mathematical
 
 We're interested in modeling a phenomenon which is simple enough in scope to implement over a couple weeks, but could be representative of some more complex system being used in the world today. 
 
+\begin{figure*}[t!]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.2in]{a}
+        \caption{Lorem ipsum}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.2in]{b}
+        \caption{Lorem ipsum, lorem ipsum,Lorem ipsum, lorem ipsum,Lorem ipsum}
+    \end{subfigure}
+    \caption{Caption place holder}
+\end{figure*}
+
 Consider the phenomenon of an object flying through the air. A wide variety of applications depend on the ability to accurately predict the future location of such flying objects. Examples of automated computer systems tracking projectile objects are abundant in the fields of missile/drone guidance and missile/drone defense.\footnote{ADD FIGURE: CIWS} Beyond automated systems, human minds have to compute trajectories in many scenarios. Many sports require throwing and catching balls, and even in agriculture there is a need to predict trajectories.\footnote{ADD FIGURE: Durian harvest}
 
 We're going to model an object traveling on a ballistic trajectory. We will take samples of the position of some object over time, then use those samples to fit a trajectory, then use that trajectory to predict where the object will impact the ground.
