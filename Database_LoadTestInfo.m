@@ -1,21 +1,34 @@
 function [TestDescription,RawData,ModelParams] = Database_LoadTestInfo(TestNumber)
 
-% The DataDirectory.mat file contains only the variable DataDirectory,
-% which is a string containg the path of the folder containing all the
-% Tracker data. The only reason it's not hard-coded right here is to allow
-% you to modify it to point to your local copy of the data 
-load DataDirectory.mat DataDirectory
+try
+    % The DataDirectory.mat file contains only the variable DataDirectory,
+    % which is a string containg the path of the folder containing all the
+    % Tracker data. The only reason it's not hard-coded right here is to allow
+    % you to modify it to point to your local copy of the data 
+    load DataDirectory.mat DataDirectory
+    
+    % Construct the filename and load the data.
+    filename = sprintf("Throw_%02d.txt",TestNumber);
+    full_path = fullfile(DataDirectory,filename);
+    
+    RawData = readmatrix(full_path);
+catch ME
+    warning("Failed to load test data. Using sample data.");
+    disp("Did you configure DataDirectory?");
+    TestNumber = 0;
+    RawData = getSampleData();
+end
 
-% Construct the filename and load the data.
-filename = sprintf("Throw_%02d.txt",TestNumber);
-full_path = fullfile(DataDirectory,filename);
-RawData = readmatrix(full_path);
 
 % Construct the initial guess for the model parameters and provide a
 % description of the test.
 ModelParams = [0,0,0,0,0];
 TestDescription = "[No Description]";
 switch(TestNumber)
+    case 0
+        % Sample data from test 4
+        TestDescription = "[SAMPLE DATA] Ball; Med. Chute; High Arc; Clean Chute Dynamics";
+        ModelParams = [-1.871997654204061,2.328357930556231,2.715263611801111,5.872290524153842,0.309757887070275];
     case 1
         TestDescription = "Ball; No Chute; Low Arc";
         ModelParams = [-3.101180389377290,1.797233145654777,4.026493470154301,1.540168154396064,0.044531392764840];
